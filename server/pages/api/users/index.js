@@ -25,12 +25,32 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-      users.push(req.body);
+      const conn = await connectDb();
+      const users = [];
 
-      res.status(200).json(users);
+      try {
+        const [ result ] = await conn.query(queries.getUser());
+        console.log(result);
+        users.push(req.body);
+
+        JSON.stringify({
+          "id": "wngud9646",
+          "password": "lee1234",
+          "username": "이주형",
+          "email": "wngud9646@gmail.com",
+          "role": "streamer",
+          "cash": 20000,
+          "created_at": "23/06/14-09:53:52",
+          "modified_at": "23/06/14-09:53:52"
+        });
+
+        await conn.end();
+        res.status(200).json(users);
+      } catch (err) {
+        res.status(500).json({ error: 'post작성 오류' });
+      }
     }
   } else {
     res.status(401).json({ message: 'Unauthorized' });
   }
 }
-
