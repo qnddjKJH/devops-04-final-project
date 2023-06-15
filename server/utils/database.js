@@ -39,11 +39,17 @@ const getMission = () => `
   SELECT *
   FROM mission
 `
+const verify = (user_id, password) => `
+  SELECT * 
+  FROM user 
+  WHERE user_id = "${user_id}" AND password = "${password}"
+`
 
 module.exports = {
   connectDb,
   queries: {
     getUser,
-    getMission
+    getMission,
+    verify
   }
 }
