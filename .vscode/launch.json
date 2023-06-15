@@ -10,7 +10,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "outputCapture": "std"
+      "outputCapture": "console"
     },
   ]
 }
