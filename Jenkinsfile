@@ -7,6 +7,10 @@ pipeline {
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         ECR_IMAGE = "${ECR_REPO}:${IMAGE_TAG}"
     }
+
+    tools {
+        nodejs 'nodejs-18.16.0'
+    }
     
     stages {
         stage('Checkout') {
@@ -17,7 +21,8 @@ pipeline {
         
         stage('Build Image') {
             steps {
-                dir('main/server') {
+                dir('./server') {
+                    sh 'node --version'
                     sh 'docker build -t my-app .'
                 }
             }
