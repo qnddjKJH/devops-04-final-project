@@ -1,12 +1,17 @@
-variable "prv_vpc_id" {
+variable "vpc_id_db" {
   description = "Value of the Name tag for the vpc_id"
   type        = string
-  default     = "terraform21"
+  default     = "default"
 }
 
-variable "prvsub_id" {
+variable "prv_sub_id_db" {
   description = "Value of the Name tag for the prvsub_id"
-  default     = "terraform21"
+  default     = "default"
+}
+
+variable "pub_sub_id_db" {
+  description = "Value of the Name tag for the pubsub_id"
+  default     = "default"
 }
 
 variable "username" {
@@ -21,13 +26,7 @@ variable "password" {
   default     = "00000000"
 }
 
-variable "prvsg_id" {
-  description = "Value of the Name tag for the prvsg_id"
-  type        = string
-  default     = "team4"
-}
-
 variable "availability_zone_db" {
   description = "Value of the Name tag for the availability_zone_db"
-  default     = "team4"
+  default     = "default"
 }
