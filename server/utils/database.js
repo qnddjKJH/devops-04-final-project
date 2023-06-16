@@ -4,13 +4,6 @@ const { getSecrets } = require('./secret');
 
 const secretName = 'finaldb';
 
-/* const {
-  host: hostname,
-      user: username,
-      password: password,
-      database: database
-} = process.env; */
-
 const connectDb = async () => {
   try {
     const secrets = await getSecrets(secretName);
@@ -79,3 +72,4 @@ module.exports = {
   },
   users,
 };
+
