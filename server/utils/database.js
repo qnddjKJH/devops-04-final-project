@@ -36,11 +36,23 @@ const getMission = () => `
   SELECT *
   FROM mission
 `;
+
 const verify = (user_id, password) => `
   SELECT * 
   FROM user 
   WHERE user_id = "${user_id}" AND password = "${password}"
 `;
+
+const postMission = (user_id, mission, mission_reward, timelimit, is_active) => `
+  INSERT INTO mission (user_id, mission, mission_reward, timelimit, is_active)
+  VALUES ('${user_id}', '${mission}', ${mission_reward}, ${timelimit}, ${is_active});
+`
+
+const getPostedMission = () => `
+  SELECT *
+  FROM mission
+  WHERE id = LAST_INSERT_ID();
+`
 
 const users = [
   {
@@ -69,6 +81,8 @@ module.exports = {
     getUser,
     getMission,
     verify,
+    postMission,
+    getPostedMission
   },
   users,
 };
