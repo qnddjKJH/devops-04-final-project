@@ -19,7 +19,5 @@ jobs:
       - uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          files: |
-            coverage/**/*.xml
-            coverage/**/*.trx
-            coverage/**/*.json
+          files: server/coverage/**/*.xml
+
