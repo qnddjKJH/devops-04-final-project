@@ -16,3 +16,10 @@ jobs:
       - uses: actions/checkout@v3
       - run: npm ci
       - run: npm test
+      - uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            coverage/**/*.xml
+            coverage/**/*.trx
+            coverage/**/*.json
