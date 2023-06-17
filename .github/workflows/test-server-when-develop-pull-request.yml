@@ -1,6 +1,11 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+name: Test server package when develop pull request
+run-name: ${{ github.actor }} is testing out server package 🚀
+# 2023.06.17 [@ibocok0] https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-including-branches
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
