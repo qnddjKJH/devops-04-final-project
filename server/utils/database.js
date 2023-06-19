@@ -19,7 +19,6 @@ const connectDb = async () => {
       password,
       database,
     });
-    console.log('데이터베이스 연결');
     return conn;
   } catch (e) {
     console.log(e);
@@ -37,6 +36,12 @@ const getMission = () => `
   FROM mission
 `;
 
+const getMissionById = (id) => `
+  SELECT *
+  FROM mission
+  WHERE id = ${id}
+`;
+
 const verify = (user_id, password) => `
   SELECT * 
   FROM user 
@@ -48,10 +53,22 @@ const postMission = (user_id, mission, mission_reward, timelimit, is_active) => 
   VALUES ('${user_id}', '${mission}', ${mission_reward}, ${timelimit}, ${is_active});
 `
 
+const putMission = (id, mission) => `
+  UPDATE mission
+  SET mission= "${mission}"
+  where id = ${id}
+`
+
 const getPostedMission = () => `
   SELECT *
   FROM mission
   WHERE id = LAST_INSERT_ID();
+`
+
+const deactivateMission = (id) => `
+  UPDATE mission
+  SET is_active = false
+  where id = ${id}
 `
 
 const users = [
@@ -80,9 +97,12 @@ module.exports = {
   queries: {
     getUser,
     getMission,
+    getMissionById,
     verify,
     postMission,
-    getPostedMission
+    putMission,
+    getPostedMission,
+    deactivateMission
   },
   users,
 };
