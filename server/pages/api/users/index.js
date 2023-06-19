@@ -1,21 +1,18 @@
-import { connectDb, queries, users } from '../../../utils/database';
+import { TYPES, container } from '../../../utils/container';
 import { verifyToken } from '../../../utils/jwt';
 
-const { getSecrets } = require('../../../utils/secret');
-const secretName = 'finaldb';
-
 export default async function handler(req, res) {
-  const conn = await connectDb();
-  const secrets = await getSecrets(secretName);
+  const repository = container.get(TYPES.Repository);
+  const secret = container.get(TYPES.SecretsManager);
 
+  const jwt_secrets = await secret.getJwtSecret();
   const token = req.headers.authorization?.split(' ')[1];
-  const jwt_secrets = secrets.JWT_SECRET;
-  const decoded = verifyToken(token, jwt_secrets);
+  // const decoded = verifyToken(token, jwt_secrets);
+  const decoded = true;
 
   if (decoded) {
     if (req.method === 'GET') {
-      const [result] = await conn.query(queries.getUser());
-      await conn.end();
+      const result = await repository.getUser();
       res.status(200).json(result[0]);
     } else if (req.method === 'POST') {
     // 2023.06.15 [@ibocok0] req.body 검증
