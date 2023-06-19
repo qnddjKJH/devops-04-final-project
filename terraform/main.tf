@@ -20,10 +20,13 @@ module "mission_link_vpc" {
 module "mission_link_db" {
     source = "./modules/database"
 
-    prv_vpc_id = module.mission_link_vpc.vpc_id
-    prvsub_id = module.mission_link_vpc.private_subnet_ids
-    prvsg_id = module.mission_link_sg.prv_sg
-    availability_zone_db = module.mission_link_vpc.availability_zone
+    vpc_id_db = module.mission_link_vpc.vpc_id
+    pub_sub_id_db = module.mission_link_vpc.public_subnet_ids
+    prv_sub_id_db = module.mission_link_vpc.private_subnet_ids
+}
+
+module "mission_link_event" {
+    source = "./modules/event"
 }
 
 module "mission_link_bastion" {

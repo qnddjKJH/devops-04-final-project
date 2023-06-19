@@ -1,17 +1,16 @@
 variable "vpc_id_db" {
   description = "Value of the Name tag for the vpc_id"
   type        = string
-  default     = "default"
 }
 
 variable "prv_sub_id_db" {
   description = "Value of the Name tag for the prvsub_id"
-  default     = "default"
+  type = list(string)
 }
 
 variable "pub_sub_id_db" {
   description = "Value of the Name tag for the pubsub_id"
-  default     = "default"
+  type = list(string)
 }
 
 variable "username" {
@@ -26,7 +25,12 @@ variable "password" {
   default     = "00000000"
 }
 
-variable "availability_zone_db" {
-  description = "Value of the Name tag for the availability_zone_db"
-  default     = "default"
+data "aws_availability_zones" "available" {
+	state = "available"
+}
+
+variable "allowed_cidr_blocks" {
+  description = "default allowed cidr blocks"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }

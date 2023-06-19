@@ -7,19 +7,21 @@
       from_port   = 3306
       to_port     = 3306
       protocol    = "tcp"
+      cidr_blocks = var.allowed_cidr_blocks
     }
 
     ingress {
-      from_port   = 8000
-      to_port     = 8000
-      protocol    = "tcp"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = var.allowed_cidr_blocks
     }
 
     egress {
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = var.allowed_cidr_blocks
   }
 
     tags = {
