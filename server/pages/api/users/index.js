@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       await conn.end();
       res.status(200).json(result[0]);
     } else if (req.method === 'POST') {
-    // 2023.06.15 [ibocok0] req.body 검증
+    // 2023.06.15 [@ibocok0] req.body 검증
       if (req.body.id === undefined) {
         res.status(400).json('id');
       }
