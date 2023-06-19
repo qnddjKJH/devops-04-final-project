@@ -1,0 +1,23 @@
+name: Test server package when develop pull request
+run-name: ${{ github.actor }} is testing out server package 🚀
+# 2023.06.17 [@ibocok0] https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-including-branches
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+jobs:
+  npm_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: npm test
+      - uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: server/coverage/**/*.xml
+
