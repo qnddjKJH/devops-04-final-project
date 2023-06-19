@@ -20,9 +20,9 @@ module "mission_link_vpc" {
 module "mission_link_db" {
     source = "./modules/database"
 
-    vpc_id_db = module.mission_link_vpc.vpc_id
-    pub_sub_id_db = module.mission_link_vpc.public_subnet_ids
-    prv_sub_id_db = module.mission_link_vpc.private_subnet_ids
+    vpc_id = module.mission_link_vpc.vpc_id
+    public_subnet_ids = module.mission_link_vpc.public_subnet_ids
+    private_subnet_ids = module.mission_link_vpc.private_subnet_ids
 }
 
 module "mission_link_event" {
