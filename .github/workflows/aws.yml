@@ -61,15 +61,16 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Set image tag from release tag
-      id: set-image-tag
-      run: echo "::set-output name=image_tag::${{ github.event.release.tag_name }}"
+    - name: Generate image tag
+      id: generate-image-tag
+      run: |
+        echo "::set-output name=tag::$(date +%Y%m%d%H%M%S)"
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ steps.set-image-tag.outputs.image_tag }}
+        IMAGE_TAG: ${{ steps.generate-image-tag.outputs.tag }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
