@@ -23,6 +23,7 @@ resource "aws_subnet" "public_subnet" {
   availability_zone = element(data.aws_availability_zones.available.names, count.index)
 
   # EKS node group에 자동으로 IP 할당을 해주기위함.
+  # 없어도 될거 같음
   map_public_ip_on_launch = true
 
   tags = {
@@ -78,16 +79,6 @@ resource "aws_route_table" "mission_link_pri_rtb" {
   }
 }
 
-# bastion 이 들어가는 private subnet 용 route table
-resource "aws_route_table" "mission_link_pri_bastion_rtb" {
-  vpc_id = aws_vpc.mission_link_vpc.id
-
-  tags = {
-    Name = "mission_link_pri_bastion_rtb"
-    project = "MissionLink"
-  }
-}
-
 # public 서브넷들과 인터넷 게이트웨이를 연결하는 라우트 테이블 연결
 resource "aws_route_table_association" "mission_link_pub_rtb_association" {
   count          = length(aws_subnet.public_subnet)
@@ -95,17 +86,9 @@ resource "aws_route_table_association" "mission_link_pub_rtb_association" {
   route_table_id = aws_route_table.mission_link_pub_rtb.id
 }
 
-## 나중에 네트워크 부분 통합할 예정 - 리팩토링
-# bastion 용 서브넷 라우트 테이블 연결
-resource "aws_route_table_association" "mission_link_pri_bastion_rtb_association" {
-  subnet_id      = aws_subnet.private_subnet[0].id
-  route_table_id = aws_route_table.mission_link_pri_bastion_rtb.id
-}
-
-# 나머지 private 서브넷들 메인 라우트 테이블 연결
-# 0번 제외 1번 ~ 3번까지
+# private 서브넷들 메인 라우트 테이블 연결
 resource "aws_route_table_association" "mission_link_pri_rtb_association" {
-  count          = length(aws_subnet.private_subnet) - 1
-  subnet_id      = aws_subnet.private_subnet[count.index + 1].id
+  count          = length(aws_subnet.private_subnet)
+  subnet_id      = aws_subnet.private_subnet[count.index].id
   route_table_id = aws_route_table.mission_link_pri_rtb.id
 }
