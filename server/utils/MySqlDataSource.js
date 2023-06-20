@@ -2,14 +2,20 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import { getSecrets } from './Secret';
 
-const secretName = 'finaldb';
-
 export default class MySqlDataSource {
-
-  async getUser() {
-    const connection = await createConnection();
+  async createUser(user) {
+    const connection = await this.createConnection();
     // 2023.06.20 [@ibocok0] TODO 쿼리문 작성 부탁드립니다.
-    const [ result ] = connection.query(`
+    const [result] = connection.query(``);
+    connection.end();
+
+    return result;
+  }
+
+  async readUsers() {
+    const connection = await this.createConnection();
+    // 2023.06.20 [@ibocok0] TODO 쿼리문 작성 부탁드립니다.
+    const [result] = connection.query(`
       SELECT *
       FROM user
     `);
@@ -18,36 +24,21 @@ export default class MySqlDataSource {
     return result;
   }
 
-  async createUser(user) {
-    const connection = await createConnection();
-    // 2023.06.20 [@ibocok0] TODO 쿼리문 작성 부탁드립니다.
-    const [ result ] = connection.query(``);
-    connection.end();
-
-    return result;
-  }
-
   async createConnection() {
+    const secrets = await getSecrets('database');
+
+    const host = secrets.host;
+    const database = secrets.dbname;
+    const user = secrets.username;
+    const password = secrets.password;
+
     try {
-      const secrets = await getSecrets(secretName);
-
-      const host = secrets.HOSTNAME;
-      const user = secrets.USERNAME;
-      const password = secrets.PASSWORD;
-      const database = secrets.DATABASE;
-
-      const conn = await mysql.createConnection({
-        host,
-        user,
-        password,
-        database,
-      });
-      return conn;
+      return await mysql.createConnection({ host, user, password, database });
     } catch (e) {
       console.log(e);
       throw new Error('데이터베이스 연결 오류');
     }
-  };
+  }
 }
 
 const getMission = () => `

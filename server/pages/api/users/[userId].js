@@ -1,25 +1,33 @@
-import { users } from '../../../utils/database';
+import { TYPES, container } from '../../../utils/container';
 
-export default async function handler(req, res) {
-  const { userId } = req.query;
+export default async function handleUsersWithUserId(req, res) {
 
-  if (req.method === 'DELETE') {
-    if (userId === undefined) {
-      res.status(400).json('id');
-    }
-
-    let deletedUser = null;
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].id === userId) {
-        deletedUser = users[i];
-        delete users[i];
-      }
-    }
-
-    if (deletedUser !== null) {
-      res.status(200).json(deletedUser);
-    } else {
-      res.status(200).json([]);
-    }
+  if (req.method === 'GET') {
+    await handleGet(req, res);
+  } else if (req.method === 'PUT') {
+    await handlePost(req, res);
+  } else if (req.method === 'DELETE') {
+    await handleDelete(req, res);
   }
+}
+
+async function handleGet(req, res) {
+  const { userId } = req.query;
+  const repository = container.get(TYPES.Repository);
+
+  res.status(200);
+}
+
+async function handlePut(req, res) {
+  const { userId } = req.query;
+  const repository = container.get(TYPES.Repository);
+
+  res.status(200);
+}
+
+async function handleDelete(req, res) {
+  const { userId } = req.query;
+  const repository = container.get(TYPES.Repository);
+
+  res.status(200);
 }

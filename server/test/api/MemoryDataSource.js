@@ -1,6 +1,11 @@
 export default class MemoryDataSource {
+  async createUser(user) {
+    return {
+        id: 459068
+      };
+  }
 
-  async getUser() {
+  async readUsers() {
     return [
       {
         id: 39590,
@@ -21,11 +26,5 @@ export default class MemoryDataSource {
         modified_at: 'Thu Jun 15 2023 23:35:23 GMT+0900 (대한민국 표준시)',
       },
     ];
-  }
-
-  async createUser(user) {
-    return {
-        id: 459068
-      };
   }
 }

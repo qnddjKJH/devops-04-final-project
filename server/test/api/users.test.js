@@ -8,24 +8,18 @@ import MemoryDataSource from './memoryDataSource';
 import SecretsManager from '../../utils/SecretsManager';
 import MemorySecrets from './MemorySecrets';
 
-import handler from '../../pages/api/users';
+import handleUsers from '../../pages/api/users';
 
 
 describe('/api/users', () => {
   test('when get users', async () => {
     // given
-    const container = new Container();
-    container.bind(TYPES.Repository).to(Repository);
-    container.bind(TYPES.SecretsManager).to(SecretsManager);
-    container.bind(TYPES.DataSource).to(MemoryDataSource);
-    container.bind(TYPES.Secrets).to(MemorySecrets);
-
     const { req, res } = createMocks({
       method: 'GET'
     });
 
     // when
-    await handler(req, res);
+    await handleUsers(req, res);
 
     // then
     expect(res._getStatusCode()).toBe(200);

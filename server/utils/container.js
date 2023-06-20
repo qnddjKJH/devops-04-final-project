@@ -1,4 +1,5 @@
 // 2023.06.20 [@ibocok0] IoC Container 생성
+import dotenv from 'dotenv';
 import { Container, injectable, decorate, inject } from 'inversify';
 import 'reflect-metadata';
 
@@ -32,7 +33,10 @@ decorate(inject(TYPES.Secrets), SecretsManager, 0);
 export const container = new Container();
 container.bind(TYPES.Repository).to(Repository);
 container.bind(TYPES.SecretsManager).to(SecretsManager);
-// container.bind(TYPES.DataSource).to(MemoryDataSource);
-// container.bind(TYPES.Secrets).to(MemorySecrets);
-container.bind(TYPES.DataSource).to(MySqlDataSource);
-container.bind(TYPES.Secrets).to(AWSSecrets);
+if (process.env.NODE_ENV === 'test') {
+  container.bind(TYPES.DataSource).to(MemoryDataSource);
+  container.bind(TYPES.Secrets).to(MemorySecrets);
+} else {
+  container.bind(TYPES.DataSource).to(MySqlDataSource);
+  container.bind(TYPES.Secrets).to(AWSSecrets);
+}

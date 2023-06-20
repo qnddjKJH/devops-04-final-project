@@ -8,6 +8,6 @@ export default class SecretsManager {
   }
 
   async getSecret(name) {
-    return await this._secrets.get(name);
+    return await this._secrets.getSecret(name);
   }
 }
