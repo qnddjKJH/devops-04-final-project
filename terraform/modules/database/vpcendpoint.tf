@@ -1,6 +1,6 @@
 # vpc 엔드포인트
 resource "aws_vpc_endpoint" "dynamodb" { 
-  vpc_id = var.vpc_id_db
+  vpc_id = var.vpc_id
   service_name = "com.amazonaws.ap-northeast-2.dynamodb"
   vpc_endpoint_type = "Gateway"
 

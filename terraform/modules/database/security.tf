@@ -1,6 +1,6 @@
 # private security_group 생성
   resource "aws_security_group" "mission_link_prvsg" {
-    vpc_id = var.vpc_id_db
+    vpc_id = var.vpc_id
     name   = "terraform-prv-sg1"
     description = "terraform-prv-sg1"
     ingress {
