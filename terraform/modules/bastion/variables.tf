@@ -28,5 +28,5 @@ variable "vpc_id" {
 variable "allowed_cidr_blocks" {
   description = "default allowed cidr blocks"
   type        = list(string)
-  default     = ["0.0.0.0/16"]
+  default     = ["0.0.0.0/0"]
 }
