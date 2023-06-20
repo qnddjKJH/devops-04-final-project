@@ -28,47 +28,52 @@ const connectDb = async () => {
 
 const getUser = () => `
   SELECT *
-  FROM user
+  FROM users;
 `;
 
 const getMission = () => `
   SELECT *
-  FROM mission
+  FROM missions;
 `;
 
 const getMissionById = (id) => `
   SELECT *
-  FROM mission
-  WHERE id = ${id}
+  FROM missions
+  WHERE id = ${id};
 `;
 
 const verify = (user_id, password) => `
   SELECT * 
-  FROM user 
-  WHERE user_id = "${user_id}" AND password = "${password}"
+  FROM users 
+  WHERE user_id = "${user_id}" AND password = "${password}";
 `;
 
 const postMission = (user_id, mission, mission_reward, timelimit, is_active) => `
-  INSERT INTO mission (user_id, mission, mission_reward, timelimit, is_active)
+  INSERT INTO missions (user_id, mission, mission_reward, timelimit, is_active)
   VALUES ('${user_id}', '${mission}', ${mission_reward}, ${timelimit}, ${is_active});
 `
 
 const putMission = (id, mission) => `
-  UPDATE mission
+  UPDATE missions
   SET mission= "${mission}"
-  where id = ${id}
+  where id = ${id};
 `
 
 const getPostedMission = () => `
   SELECT *
-  FROM mission
+  FROM missions
   WHERE id = LAST_INSERT_ID();
 `
 
 const deactivateMission = (id) => `
-  UPDATE mission
+  UPDATE missions
   SET is_active = false
-  where id = ${id}
+  where id = ${id};
+`
+const getEmail = (id) => `
+  SELECT email
+  FROM users
+  where id = "${id}";
 `
 
 module.exports = {
@@ -81,7 +86,9 @@ module.exports = {
     postMission,
     putMission,
     getPostedMission,
-    deactivateMission
-  }
+    deactivateMission,
+    getEmail
+  },
+  users,
 };
 

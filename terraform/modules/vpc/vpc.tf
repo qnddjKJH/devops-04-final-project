@@ -68,9 +68,44 @@ resource "aws_route_table" "mission_link_pub_rtb" {
   }
 }
 
+# private 서브넷들의 메인 route table
+resource "aws_route_table" "mission_link_pri_rtb" {
+  vpc_id = aws_vpc.mission_link_vpc.id
+
+  tags = {
+    Name = "mission_link_pri_rtb"
+    project = "MissionLink"
+  }
+}
+
+# bastion 이 들어가는 private subnet 용 route table
+resource "aws_route_table" "mission_link_pri_bastion_rtb" {
+  vpc_id = aws_vpc.mission_link_vpc.id
+
+  tags = {
+    Name = "mission_link_pri_bastion_rtb"
+    project = "MissionLink"
+  }
+}
+
 # public 서브넷들과 인터넷 게이트웨이를 연결하는 라우트 테이블 연결
 resource "aws_route_table_association" "mission_link_pub_rtb_association" {
   count          = length(aws_subnet.public_subnet)
   subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.mission_link_pub_rtb.id
+}
+
+## 나중에 네트워크 부분 통합할 예정 - 리팩토링
+# bastion 용 서브넷 라우트 테이블 연결
+resource "aws_route_table_association" "mission_link_pri_bastion_rtb_association" {
+  subnet_id      = aws_subnet.private_subnet[0].id
+  route_table_id = aws_route_table.mission_link_pri_bastion_rtb.id
+}
+
+# 나머지 private 서브넷들 메인 라우트 테이블 연결
+# 0번 제외 1번 ~ 3번까지
+resource "aws_route_table_association" "mission_link_pri_rtb_association" {
+  count          = length(aws_subnet.private_subnet) - 1
+  subnet_id      = aws_subnet.private_subnet[count.index + 1].id
+  route_table_id = aws_route_table.mission_link_pri_rtb.id
 }

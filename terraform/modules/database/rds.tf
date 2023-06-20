@@ -1,7 +1,7 @@
 # DB 서브넷 그룹 생성
 resource "aws_db_subnet_group" "dbsg" {
   name = "mission_link_db_sg"
-  subnet_ids = var.pub_sub_id_db
+  subnet_ids = var.public_subnet_ids
   tags = {
     Name = "mission_link_dbsg"
     project = "MissionLink"
@@ -16,6 +16,7 @@ resource "aws_db_instance" "db" {
   instance_class       = "db.t3.micro"
   username             = var.username
   password             = aws_secretsmanager_secret_version.db_password.secret_string
+
   skip_final_snapshot  = true
   vpc_security_group_ids = [aws_security_group.mission_link_prvsg.id]
   availability_zone = element(data.aws_availability_zones.available.names, 0)
