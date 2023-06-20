@@ -1,12 +1,16 @@
-variable "prv_vpc_id" {
+variable "vpc_id" {
   description = "Value of the Name tag for the vpc_id"
   type        = string
-  default     = "terraform21"
 }
 
-variable "prvsub_id" {
+variable "private_subnet_ids" {
   description = "Value of the Name tag for the prvsub_id"
-  default     = "terraform21"
+  type = list(string)
+}
+
+variable "public_subnet_ids" {
+  description = "Value of the Name tag for the pubsub_id"
+  type = list(string)
 }
 
 variable "username" {
@@ -21,13 +25,18 @@ variable "password" {
   default     = "00000000"
 }
 
-variable "prvsg_id" {
-  description = "Value of the Name tag for the prvsg_id"
-  type        = string
-  default     = "team4"
+data "aws_availability_zones" "available" {
+	state = "available"
 }
 
-variable "availability_zone_db" {
-  description = "Value of the Name tag for the availability_zone_db"
-  default     = "team4"
+variable "allowed_cidr_blocks" {
+  description = "default allowed cidr blocks"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "allowed_account" {
+  description = "default allowed account"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }
