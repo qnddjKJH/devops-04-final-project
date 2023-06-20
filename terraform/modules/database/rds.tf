@@ -16,7 +16,6 @@ resource "aws_db_instance" "db" {
   instance_class       = "db.t3.micro"
   username             = var.username
   password             = aws_secretsmanager_secret_version.db_password.secret_string
-  # password           = 
 
   skip_final_snapshot  = true
   vpc_security_group_ids = [aws_security_group.mission_link_prvsg.id]

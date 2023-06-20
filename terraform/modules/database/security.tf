@@ -3,6 +3,7 @@
     vpc_id = var.vpc_id
     name   = "terraform-prv-sg1"
     description = "terraform-prv-sg1"
+
     ingress {
       from_port   = 3306
       to_port     = 3306
