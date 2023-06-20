@@ -10,6 +10,10 @@ output "private_subnet_ids" {
   value = aws_subnet.private_subnet[*].id
 }
 
-output "availability_zone" {
-  value = aws_subnet.private_subnet[0].availability_zone
+output "private_subnet_bastion_rtb_id" {
+  value = aws_route_table.mission_link_pri_bastion_rtb.id
+}
+
+output "private_subnet_rtb_id" {
+  value = aws_route_table.mission_link_pri_rtb.id
 }
