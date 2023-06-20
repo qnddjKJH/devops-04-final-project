@@ -65,6 +65,7 @@ const createSubscription = async (id, result) => {
   return subscription();
 };
 
+/*
 const publishtoTopic = (result) => {
   const successParams = {
     Message:
@@ -101,3 +102,4 @@ module.exports = {
   createSubscription,
   publishtoTopic,
 };
+*/

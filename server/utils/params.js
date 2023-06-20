@@ -3,14 +3,14 @@ const createBetParams = (missionId, amount, transactionId) => {
     Entries: [
       {
         // Event envelope fields
-        Source: 'custom.myATMapp',
+        Source: 'mission_link',
         EventBusName: 'default',
         DetailType: 'transaction',
 
         // Main event body
         Detail: JSON.stringify({
           missionid: missionId,
-          body: "bat",
+          action: "bet",
           amount: amount,
           result: "betting success",
           transactionId: transactionId,
@@ -23,13 +23,13 @@ const createBetParams = (missionId, amount, transactionId) => {
 };
 
 const missionresultParams = (missionId, transactionId, result) => {
-  let body, missionResult;
+  let action, missionResult;
   
   if(result === "success"){
-    body = "success";
+    action = "success";
     missionResult = "mission success, mission deactivating"
   } else if(result === "fail"){
-    body = "fail"
+    action = "fail"
     missionResult = "mission fail, mission deactivating"
   }
   
@@ -37,14 +37,14 @@ const missionresultParams = (missionId, transactionId, result) => {
     Entries: [
       {
         // Event envelope fields
-        Source: 'custom.myATMapp',
+        Source: 'mission_link',
         EventBusName: 'default',
         DetailType: 'transaction',
 
         // Main event body
         Detail: JSON.stringify({
           missionid: missionId,
-          body: body,
+          action: action,
           result: missionResult,
           transactionId: transactionId,
         }),
