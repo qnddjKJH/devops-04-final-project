@@ -28,11 +28,8 @@ name: Deploy to Amazon ECS
 
 on:
   pull_request:
-    branches:
-      - 'main'
-      - 'develop'
     paths:
-      - 'server'
+      - '.github'
     types:
       - closed
 
