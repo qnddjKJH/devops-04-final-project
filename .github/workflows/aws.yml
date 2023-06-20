@@ -29,8 +29,8 @@ name: Deploy to Amazon ECS
 on:
   pull_request:
     branches:
-      - main
-      - develop
+      - 'main'
+      - 'develop'
     paths:
       - 'server'
     types:
@@ -65,11 +65,16 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Generate image tag
+      id: generate-image-tag
+      run: |
+        echo "::set-output name=tag::$(date +%Y%m%d%H%M%S)"
+
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.event.pull_request.number }}
+        IMAGE_TAG: ${{ steps.generate-image-tag.outputs.tag }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
