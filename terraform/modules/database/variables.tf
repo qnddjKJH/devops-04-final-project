@@ -41,11 +41,6 @@ variable "allowed_account" {
   default     = ["0.0.0.0/0"]
 }
 
-variable "private_subnet_bastion_rtb_id" {
-  description = "bastion pri sub rtb"
-  type        = string
-}
-
 variable "private_subnet_rtb_id" {
   description = "pri subs main rtb"
   type        = string
