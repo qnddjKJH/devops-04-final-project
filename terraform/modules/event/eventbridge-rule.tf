@@ -1,21 +1,20 @@
 # EventBridge 베팅 규칙 생성
-resource "aws_cloudwatch_event_rule" "bat" {
-  name        = "mission_link_bat_event"
-  description = "mission_link_bat_event"
-  #schedule_expression = "rate(2 minutes)"
+resource "aws_cloudwatch_event_rule" "bet" {
+  name        = "mission_link_bet_event"
+  description = "mission_link_bet_event"
 
   event_pattern = <<PATTERN
 {
   "detail-type": ["transaction"],
-  "source": ["custom.myATMapp"],
+  "source": ["mission_link"],
   "detail": {
-    "body": ["bat"]
+    "action": ["bet"]
   }
 }
 PATTERN
 
   tags = {
-    Name = "mission_link_rule_bat"
+    Name = "mission_link_rule_bet"
     project = "MissionLink"
   }
 }
@@ -28,9 +27,9 @@ resource "aws_cloudwatch_event_rule" "success" {
   event_pattern = <<PATTERN
 {
   "detail-type": ["transaction"],
-  "source": ["custom.myATMapp"],
+  "source": ["mission_link"],
   "detail": {
-    "body": ["success"]
+    "action": ["success"]
   }
 }
 PATTERN
@@ -49,9 +48,9 @@ resource "aws_cloudwatch_event_rule" "fail" {
   event_pattern = <<PATTERN
 {
   "detail-type": ["transaction"],
-  "source": ["custom.myATMapp"],
+  "source": ["mission_link"],
   "detail": {
-    "body": ["fail"]
+    "action": ["fail"]
   }
 }
 PATTERN
@@ -63,12 +62,12 @@ PATTERN
 }
 
 # EventBridge가 bat_lambda를 호출하기 위한 권한 생성
-resource "aws_lambda_permission" "allow_cloudwatch_bat_lambda" {
+resource "aws_lambda_permission" "allow_cloudwatch_bet_lambda" {
   statement_id = "AllowExecutionFromCloudWatch"
   action = "lambda:InvokeFunction"
-  function_name = module.mission_link_bat_lambda.lambda_function_name
+  function_name = module.mission_link_bet_lambda.lambda_function_name
   principal = "events.amazonaws.com"
-  source_arn = aws_cloudwatch_event_rule.bat.arn
+  source_arn = aws_cloudwatch_event_rule.bet.arn
 }
 
 # EventBridge가 success_lambda를 호출하기 위한 권한 생성
@@ -89,10 +88,10 @@ resource "aws_lambda_permission" "allow_cloudwatch_fail_lambda" {
   source_arn = aws_cloudwatch_event_rule.fail.arn
 }
 
-# EventBridge에 bat 람다 타겟 연결 
-resource "aws_cloudwatch_event_target" "lambda_target_bat" {
-  arn = module.mission_link_bat_lambda.lambda_function_arn
-  rule = aws_cloudwatch_event_rule.bat.name
+# EventBridge에 bet 람다 타겟 연결 
+resource "aws_cloudwatch_event_target" "lambda_target_bet" {
+  arn = module.mission_link_bet_lambda.lambda_function_arn
+  rule = aws_cloudwatch_event_rule.bet.name
 }
 
 # EventBridge에 success 람다 타겟 연결 

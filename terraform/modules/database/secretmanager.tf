@@ -1,6 +1,6 @@
 # Creating a AWS secret for database master account (Masteraccoundb)
 resource "aws_secretsmanager_secret" "db_password" {
-  name = "mission_link_secret.dbrds_password"
+  name = "mission_link_secret.db_rd_password"
 }
 
 # Creating a AWS secret versions for database master account (Masteraccoundb)
@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "secret_iam" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::775385743817:root"]
+      identifiers = ["*"]
     }
 
     actions   = ["secretsmanager:GetSecretValue"]
