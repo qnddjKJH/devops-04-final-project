@@ -7,7 +7,7 @@ export default class SecretsManager {
     return await this._secrets.getJwtSecret();
   }
 
-  async get(name) {
+  async getSecret(name) {
     return await this._secrets.get(name);
   }
 }

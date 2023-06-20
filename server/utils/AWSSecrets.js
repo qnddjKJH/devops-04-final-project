@@ -1,15 +1,17 @@
 import {
-    SecretsManagerClient,
-    GetSecretValueCommand,
+  SecretsManagerClient,
+  GetSecretValueCommand,
 } from '@aws-sdk/client-secrets-manager';
 
-export default class AWSSecretsManager {
+export default class AWSSecrets {
+  constructor() {}
+
   async getJwtSecret() {
-    const result = await get('finaldb');
+    const result = await this.getSecret('finaldb');
     return result.JWT_SECRET;
   }
 
-  async get(name) {
+  async getSecret(name) {
     const client = new SecretsManagerClient({
       region: 'ap-northeast-2', // Replace with your desired AWS region
     });

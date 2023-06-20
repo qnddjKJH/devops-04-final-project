@@ -3,7 +3,7 @@ export default class MemorySecrets {
     return "JWT_SECRET";
   }
 
-  async get(name) {
+  async getSecret(name) {
     if ('hello') {
       return 'world';
     }
