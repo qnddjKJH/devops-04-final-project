@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-// import { connectDb, queries } from '../../../../utils/database';
+import { connectDb, queries } from '../../../../utils/database';
 
 const docClient = new AWS.DynamoDB.DocumentClient({
     region: 'ap-northeast-2',
