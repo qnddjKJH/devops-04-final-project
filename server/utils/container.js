@@ -18,11 +18,7 @@ export const TYPES = {
   Secrets: 'Secrets'
 };
 
-// 2023.06.20 [@ibocok0] Repository 구성
-decorate(injectable(), MySqlDataSource);
-decorate(injectable(), MemoryDataSource);
-decorate(injectable(), Repository);
-decorate(inject(TYPES.DataSource), Repository, 0);
+// --------------------------------------
 
 // 2023.06.20 [@ibocok0] Secret 구성
 decorate(injectable(), AWSSecrets);
@@ -30,9 +26,19 @@ decorate(injectable(), MemorySecrets);
 decorate(injectable(), SecretsManager);
 decorate(inject(TYPES.Secrets), SecretsManager, 0);
 
+// 2023.06.20 [@ibocok0] Repository 구성
+decorate(injectable(), MySqlDataSource);
+decorate(inject(TYPES.SecretsManager), MySqlDataSource, 0);
+decorate(injectable(), MemoryDataSource);
+decorate(injectable(), Repository);
+decorate(inject(TYPES.DataSource), Repository, 0);
+
+// --------------------------------------
+
 export const container = new Container();
 container.bind(TYPES.Repository).to(Repository);
 container.bind(TYPES.SecretsManager).to(SecretsManager);
+
 if (process.env.NODE_ENV === 'test') {
   container.bind(TYPES.DataSource).to(MemoryDataSource);
   container.bind(TYPES.Secrets).to(MemorySecrets);
