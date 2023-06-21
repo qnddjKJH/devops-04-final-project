@@ -15,7 +15,8 @@ async function handleGet(req, res) {
   const { userId } = req.query;
   const repository = container.get(TYPES.Repository);
 
-  res.status(200);
+  const result = await repository.readUser(userId);
+  res.status(200).json(result);
 }
 
 async function handlePut(req, res) {

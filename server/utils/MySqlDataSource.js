@@ -21,11 +21,43 @@ export default class MySqlDataSource {
     const connection = await this.createConnection();
     const [result] = connection.query(`
       SELECT *
-      FROM users
+      FROM users;
     `);
     connection.end();
 
     return result;
+  }
+
+  async readUser(userId) {
+    const connection = await this.createConnection();
+    const [result] = connection.query(`
+      SELECT *
+      FROM users
+      WHERE id = ${userId};
+    `);
+    connection.end();
+
+    return result;
+  }
+
+  async updateUser(userId) {
+    const connection = await this.createConnection();
+    connection.query(`
+
+    `);
+    connection.end();
+
+    return null;
+  }
+
+  async deleteUser(userId) {
+    const connection = await this.createConnection();
+    connection.query(`
+
+    `);
+    connection.end();
+
+    return null;
   }
 
   async createConnection() {
