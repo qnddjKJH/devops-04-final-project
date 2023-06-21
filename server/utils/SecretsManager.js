@@ -4,7 +4,11 @@ export default class SecretsManager {
   }
 
   async getJwtSecret() {
-    return await this._secrets.getJwtSecret();
+    return await this._secrets.getSecret("jwt-token");
+  }
+
+  async getDbSecret() {
+    return await this._secrets.getSecret("database");
   }
 
   async getSecret(name) {

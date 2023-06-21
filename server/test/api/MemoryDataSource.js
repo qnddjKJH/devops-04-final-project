@@ -1,12 +1,21 @@
 export default class MemoryDataSource {
   async createUser(user) {
-    return {
-        id: 459068
-      };
+    return user;
   }
 
   async readUsers() {
     return [
+      {
+        id: 1,
+        user_id: 'wngud9646',
+        password: 'lee1234',
+        username: '이주형',
+        email: 'wngud9646@gmail.com',
+        role: 'streamer',
+        cash: 20000,
+        created_at: '23/06/14-09:53:52',
+        modified_at: '23/06/14-09:53:52',
+      },
       {
         id: 39590,
         username: '김예성',

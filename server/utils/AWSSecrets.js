@@ -4,13 +4,6 @@ import {
 } from '@aws-sdk/client-secrets-manager';
 
 export default class AWSSecrets {
-  constructor() {}
-
-  async getJwtSecret() {
-    const result = await this.getSecret('finaldb');
-    return result.JWT_SECRET;
-  }
-
   async getSecret(name) {
     const client = new SecretsManagerClient({
       region: 'ap-northeast-2', // Replace with your desired AWS region

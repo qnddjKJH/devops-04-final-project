@@ -5,10 +5,8 @@ export default async function handleUsers(req, res) {
     await handleGet(req, res);
   } else if (req.method === 'POST') {
     await handlePost(req, res);
-  } else if (req.method === 'PATCH') {
-    await handlePatch(req, res);
-  } else if (req.method === 'DELETE') {
-    await handleDelete(req, res);
+  } else {
+    res.status(500);
   }
 }
 
@@ -23,40 +21,33 @@ async function handlePost(req, res) {
   // 2023.06.15 [@ibocok0] req.body 검증
   if (req.body.id === undefined) {
     res.status(400).json('id');
+  } else if (req.body.user_id === undefined) {
+    res.status(400).json('user_id');
+  } else if (req.body.password === undefined) {
+    res.status(400).json('password');
+  } else if (req.body.username === undefined) {
+    res.status(400).json('username');
+  } else if (req.body.email === undefined) {
+    res.status(400).json('email');
+  } else if (req.body.role === undefined) {
+    res.status(400).json('role');
+  } else if (req.body.cash === undefined) {
+    res.status(400).json('cash');
   }
 
-  const userId = req.body.id;
   const today = Date(Date.now()).toString();
   const user = {
-    id: userId,
-    username: '김예성',
-    email: 'ibocok0@gmail.com',
-    role: 'streamer',
-    cash: 20000,
+    id: req.body.id,
+    user_id: req.body.user_id,
+    password: req.body.password,
+    username: req.body.username,
+    email: req.body.email,
+    role: req.body.role,
+    cash: req.body.cash,
     created_at: today,
     modified_at: today,
   };
-  users.push(user);
 
-  res.status(200).json(user);
-}
-
-async function handlePut(req, res) {
-  res.status(200);
-}
-
-async function handleDelete(req, res) {
-  if (req.body.id === undefined) {
-    res.status(400).json('id');
-  }
-
-  let deletedUser = null;
-  for (let i = 0; i < users.length; i++) {
-    if (users[i].id === req.body.id) {
-      deletedUser = users[i];
-      delete users[i];
-    }
-  }
-
-  res.status(200).json(deletedUser);
+  const result = await repository.createUser(user);
+  res.status(200).json(result);
 }

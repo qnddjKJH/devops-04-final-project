@@ -4,10 +4,17 @@ export default class MemorySecrets {
   }
 
   async getSecret(name) {
-    if ('hello') {
-      return 'world';
+    if (name === 'jwt-token') {
+      return 'dsiobt83ptkcd';
+    } else if (name === 'database') {
+      return {
+        host: 'localhost',
+        dbname: 'test',
+        username: 'admin',
+        password: 'p@ssw0rd'
+      }
     }
-    
-    return 'none';
+
+    return null;
   }
 }
