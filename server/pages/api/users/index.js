@@ -18,6 +18,8 @@ async function handleGet(req, res) {
 }
 
 async function handlePost(req, res) {
+  const repository = container.get(TYPES.Repository);
+
   // 2023.06.15 [@ibocok0] req.body 검증
   if (req.body.id === undefined) {
     res.status(400).json('id');
