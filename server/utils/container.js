@@ -5,7 +5,7 @@ import 'reflect-metadata';
 
 import Repository from './Repository';
 import MySqlDataSource from './MySqlDataSource';
-import MemoryDataSource from '../test/api/memoryDataSource';
+import MemoryDataSource from '../test/api/MemoryDataSource';
 
 import SecretsManager from './SecretsManager';
 import AWSSecrets from './AWSSecrets';
