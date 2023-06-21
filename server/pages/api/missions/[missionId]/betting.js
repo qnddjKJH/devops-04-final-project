@@ -19,11 +19,11 @@ export default async function handler(req, res){
       TableName: "mission_link_dynamodb_table",
       Item: {
         "id": req.body.id,
-        "user_id": req.body.user_id,
-        "mission_id": missionId,
-        "body": req.body.body,
+        "missionid": missionId,
+        "action": req.body.action,
         "amount": req.body.amount,
-        "event_type": req.body.event_type,
+        "result": req.body.result,
+        "etransactionId": req.body.transactionId,
       }
     }
    }
