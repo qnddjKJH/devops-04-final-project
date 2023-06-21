@@ -10,11 +10,11 @@ export default async function handler(req, res){
 
   const missionId = parseInt(req.query.missionId);
 
-  // const conn = await connectDb();
-  // const [result] = await conn.query(queries.getMissionById(missionId));
-  // await conn.end();
+   const conn = await connectDb();
+   const [result] = await conn.query(queries.getMissionById(missionId));
+   await conn.end();
 
-  // if(result.length !== 0) {
+   if(result.length !== 0) {
     var params = {
       TableName: "mission_link_dynamodb_table",
       Item: {
@@ -26,7 +26,7 @@ export default async function handler(req, res){
         "event_type": req.body.event_type,
       }
     }
-  // }
+   }
 
   docClient.put(params).promise()
     .then(data => {
