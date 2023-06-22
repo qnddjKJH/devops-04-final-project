@@ -56,32 +56,30 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    - name: Install and configure kubectl
-      run: |
-        VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-        # https://github.com/aws/aws-cli/issues/6920#issuecomment-1117981158
-        VERSION=v1.23.6
-        curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
-          --progress-bar \
-          --location \
-          --remote-name
-        chmod +x kubectl
-        sudo mv kubectl /usr/local/bin/
-
     - name: Setup Kustomize
       uses: imranismail/setup-kustomize@v1
 
+    - name: Checkout kustomize repository
+      uses: actions/checkout@v2
+      with:
+        repository: wngud9646/final-kube-manifest
+        ref: main
+        token: \${{ secrets.ACTION_TOKEN }}
+        path: final-kube-manifest
+
     - name: Update Kubernetes resources
       run: |
-        cd cicd/kube-manifest/overlays/dev/
-        kustomize edit set image \${{ steps.login-ecr.outputs.registry}}/\${{ env.ECR_REPOSITORY }}=\${{ steps.login-ecr.outputs.registry}}/\${{ env.ECR_REPOSITORY }}:\${{ steps.generate-image-tag.outputs.tag }}
+        echo \${{ steps.login-ecr.outputs.registry }}
+        echo \${{ env.ecr_repository }}
+        echo \${{ steps.generate-image-tag.outputs.tag }}
+        cd final-kube-manifest/overlays/dev/
+        kustomize edit set image \${{ steps.login-ecr.outputs.registry}}/\${{ env.ecr_repository }}=\${{ steps.login-ecr.outputs.registry}}/\${{ env.ecr_repository }}:\${{ steps.generate-image-tag.outputs.tag }}
+        cat kustomization.yaml
 
-    - name: Deploy to EKS
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    - name: Commit files
       run: |
-        cd cicd/kube-manifest/overlays/dev
-
-        export KUBECONFIG=${{ env.KUBECONFIG }}
-        
-        kubectl kustomize ./ | kubectl apply -f -
+        cd final-kube-manifest
+        git config --global user.email "wngud9646@gmail.com"
+        git config --global user.name "wngud9646"
+        git commit -am "Update image tag"
+        git push -u origin main
