@@ -61,5 +61,14 @@ jobs:
 
     - name: Update Kubernetes resources
       run: |
-        cd ../cicd/kube-manifest/overlays/dev/
+        cd cicd/kube-manifest/overlays/dev/
         kustomize edit set image \${{ steps.login-ecr.outputs.registry}}/\${{ env.ECR_REPOSITORY }}=\${{ steps.login-ecr.outputs.registry}}/\${{ env.ECR_REPOSITORY }}:\${{ steps.generate-image-tag.outputs.tag }}
+
+
+    - name: Commit files
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "github-actions"
+        git add .
+        git commit -am "Update image tag"
+        git push -u origin main
