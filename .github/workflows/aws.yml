@@ -64,7 +64,7 @@ jobs:
       with:
         repository: wngud9646/final-kube-manifest
         ref: main
-        token: \${{ secrets.ACTION_TOKEN }}
+        token: ${{ secrets.ACTION_TOKEN }}
         path: final-kube-manifest
 
     - name: Update Kubernetes resources
@@ -77,9 +77,12 @@ jobs:
         cat kustomization.yaml
 
     - name: Commit files
+      env:
+        GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
       run: |
         cd final-kube-manifest
         git config --global user.email "wngud9646@gmail.com"
         git config --global user.name "wngud9646"
+        git config --global github.token ${{ secrets.ACTION_TOKEN }}
         git commit -am "Update image tag"
         git push -u origin main
