@@ -40,15 +40,15 @@ export default async function handler(req, res) {
         var params = {
           TableName: "mission_link_dynamodb_table",
           Item: {
-            "id": req.body.betid,
-            "user_id": req.body.user_id,
-            "missionid": missionId,
+            "mission_id" : missionId,
+            "user_id": req.body.userId,
             "action": req.body.action,
             "amount": req.body.amount,
-            "transactionId": req.body.transactionId,
+            "id": req.body.transactionId
           }
         }
       }
+
     console.log(params);
 
     docClient.put(params).promise()
@@ -62,5 +62,4 @@ export default async function handler(req, res) {
   } else {
     res.status(401).json({ message: 'Unauthorized' });
   }
-
 }
