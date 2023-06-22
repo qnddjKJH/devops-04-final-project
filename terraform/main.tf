@@ -10,7 +10,7 @@ terraform {
 # Configure the AWS Provider
 provider "aws" {
   region = "ap-northeast-2"
-  profile = "admin"
+  //profile = "admin"
 }
 
 # create vpc and subnets
