@@ -1,3 +1,0 @@
-[submodule "cicd/kube-manifest"]
-	path = cicd/kube-manifest
-	url = git@github.com:wngud9646/final-kube-manifest.git
