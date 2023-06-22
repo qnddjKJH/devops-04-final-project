@@ -70,10 +70,10 @@ jobs:
     - name: Update Kubernetes resources
       run: |
         echo \${{ steps.login-ecr.outputs.registry }}
-        echo \${{ env.ecr_repository }}
+        echo \${{ env.ECR_REPOSITORY }}
         echo \${{ steps.generate-image-tag.outputs.tag }}
         cd final-kube-manifest/overlays/dev/
-        kustomize edit set image \${{ steps.login-ecr.outputs.registry}}/\${{ env.ecr_repository }}=\${{ steps.login-ecr.outputs.registry}}/\${{ env.ecr_repository }}:\${{ steps.generate-image-tag.outputs.tag }}
+        kustomize edit set image \${{ steps.login-ecr.outputs.registry}}/\${{ env.ECR_REPOSITORY }}=\${{ steps.login-ecr.outputs.registry}}/\${{ env.ECR_REPOSITORY }}:\${{ steps.generate-image-tag.outputs.tag }}
         cat kustomization.yaml
 
     - name: Commit files
