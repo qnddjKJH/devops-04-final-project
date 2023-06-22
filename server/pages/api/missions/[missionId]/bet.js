@@ -18,20 +18,19 @@ export default async function handler(req, res) {
   const token = req.headers.authorization?.split(' ')[1];
   const jwt_secrets = secrets.JWT_SECRET;
   const decoded = verifyToken(token, jwt_secrets);
+  const missionId = parseInt(req.query.missionId);
 
   if (decoded) {
     if (req.method === 'POST') {
       const event = createBetParams(
-        req.body.id,
+        missionId,
         req.body.amount,
         req.body.transactionId
       );
       console.log(event);
 
       const result = sendEvent(event)
-
-      const missionId = parseInt(req.query.missionId);
-
+      
       const conn = await connectDb();
       const [resultdynamo] = await conn.query(queries.getMissionById(missionId));
       await conn.end();
