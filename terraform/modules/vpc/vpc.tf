@@ -29,6 +29,8 @@ resource "aws_subnet" "public_subnet" {
   tags = {
     Name = "mission_link_public_subnet${count.index + 1}"
     project = "MissionLink"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                      = "1"
   }
 }
 
@@ -41,6 +43,8 @@ resource "aws_subnet" "private_subnet" {
   tags = {
     Name = "mission_link_private_subnet${count.index + 1}"
     project = "MissionLink"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb"             = "1"
   }
 }
 
