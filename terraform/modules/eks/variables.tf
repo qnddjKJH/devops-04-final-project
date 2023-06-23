@@ -1,6 +1,6 @@
 variable "cluster_name" {
   description = "set cluster name"
-  default = "missiont_link_eks_cluster"
+  default = "mission-link-eks-cluster"
   type    = string
 }
 
