@@ -88,6 +88,6 @@ module.exports = {
     getPostedMission,
     deactivateMission,
     getEmail
-  },
+  }
 };
 
