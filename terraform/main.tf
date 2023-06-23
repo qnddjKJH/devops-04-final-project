@@ -10,12 +10,18 @@ terraform {
 # Configure the AWS Provider
 provider "aws" {
   region = "ap-northeast-2"
-  //profile = "admin"
+  profile = "admin"
+}
+
+locals {
+  cluster_name = "mission-link-eks-cluster"
 }
 
 # create vpc and subnets
 module "mission_link_vpc" {
     source = "./modules/vpc"
+
+    cluster_name = local.cluster_name
 }
 
 module "mission_link_db" {
@@ -25,7 +31,6 @@ module "mission_link_db" {
     public_subnet_ids = module.mission_link_vpc.public_subnet_ids
     private_subnet_ids = module.mission_link_vpc.private_subnet_ids
     private_subnet_rtb_id = module.mission_link_vpc.private_subnet_rtb_id
-    private_subnet_bastion_rtb_id = module.mission_link_vpc.private_subnet_bastion_rtb_id
 }
 
 module "mission_link_event" {
@@ -57,7 +62,11 @@ module "mission_link_eks_cluster" {
 
 
 resource "null_resource" "script_execution" {
+  depends_on = [
+    module.mission_link_eks_cluster
+  ]
+
   provisioner "local-exec" {
-    command = "bash ./scripts/upload.sh ${module.mission_link_bastion.bastion_instance_id}"
+    command = "echo 'yes' | bash ./scripts/upload.sh ${module.mission_link_bastion.bastion_instance_id}"
   }
 }

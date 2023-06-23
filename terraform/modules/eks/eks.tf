@@ -63,17 +63,6 @@ resource "aws_security_group_rule" "eks_cluster_ingress" {
   type              = "ingress"
 }
 
-
-# resource "aws_security_group_rule" "demo-cluster-ingress-workstation-https" {
-#   cidr_blocks       = [local.workstation-external-cidr]
-#   description       = "Allow workstation to communicate with the cluster API Server"
-#   from_port         = 443
-#   protocol          = "tcp"
-#   security_group_id = aws_security_group.demo-cluster.id
-#   to_port           = 443
-#   type              = "ingress"
-# }
-
 # EKS Cluster 설정
 resource "aws_eks_cluster" "missiont_link_cluster" {
   name     = var.cluster_name
@@ -91,27 +80,3 @@ resource "aws_eks_cluster" "missiont_link_cluster" {
     aws_iam_role_policy_attachment.mission_link_cluster_AmazonEKSVPCResourceController,
   ]
 }
-
-
-# module "missiont_link_cluster" {
-#   source  = "terraform-aws-modules/eks/aws"
-#   version = "19.15.3"
-
-#   cluster_name    = var.cluster_name
-#   cluster_version = "1.27"
-#   vpc_id          = var.vpc_id
-#   subnet_ids      = var.private_subnet_ids
-
-#   eks_managed_node_groups = {
-#     default_node_group = {
-#       min_size     = 1
-#       max_size     = 1
-#       desired_size = 1
-#       instance_types = ["t3.medium"]
-#     }
-#   }
-
-#   tags = {
-#     Environment = "dev"
-#   }
-# }
