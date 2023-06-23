@@ -30,6 +30,7 @@ const createSubscription = async (id, result) => {
   await conn.end();
   const values = userinfo.map((obj) => Object.values(obj)[0]);
   const email = values.join(', ');
+  console.log(email)
 
   let topicArn;
   if (result === 'success') {
@@ -97,9 +98,8 @@ const publishtoTopic = (result) => {
 
   return publish();
 };
+*/
 
 module.exports = {
-  createSubscription,
-  publishtoTopic,
+  createSubscription
 };
-*/

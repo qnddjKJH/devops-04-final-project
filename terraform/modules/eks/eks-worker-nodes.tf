@@ -73,7 +73,7 @@ resource "aws_eks_node_group" "mission_link_worker_node_group" {
   cluster_name    = aws_eks_cluster.missiont_link_cluster.name
   node_group_name = "mission_link_worker_node_group"
   node_role_arn   = aws_iam_role.mission_link_worker_node_role.arn
-  subnet_ids      = [var.private_subnet_ids[0]]
+  subnet_ids      = [var.public_subnet_ids[0]]
   # 원래는 private subnet 전체에 워커 노드를 걸어야 한다
   # 하지만 오토 스케일링 작동 방식은 랜덤이다. 즉 인스턴스가 어느 서브넷에 배치될지 모른다.
   # 나중에 네트워크 리팩토링 작업 끝나고 할거
