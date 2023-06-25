@@ -63,10 +63,10 @@ export default class MySqlDataSource {
   async createConnection() {
     const secrets = await this._secretsManager.getDbSecret();
 
-    const host = secrets.host;
-    const database = secrets.dbname;
-    const user = secrets.username;
-    const password = secrets.password;
+    const host = secrets.HOSTNAME;
+    const database = secrets.DATABASE;
+    const user = secrets.USERNAME;
+    const password = secrets.PASSWORD;
 
     try {
       return await mysql.createConnection({ host, user, password, database });
