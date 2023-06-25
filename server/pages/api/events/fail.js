@@ -32,8 +32,8 @@ export default async function handlerfail(req, res) {
         'fail',
       );
 
-      // createSubscription(missionId, 'fail');
-      // sendEvent(event);
+      createSubscription(missionId, 'fail');
+      sendEvent(event);
 
       const conn = await connectDb();
       const [resultdynamo] = await conn.query(queries.getMissionById(missionId));
