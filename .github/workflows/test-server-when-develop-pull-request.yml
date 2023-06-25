@@ -14,6 +14,7 @@ jobs:
         working-directory: ./server
     steps:
       - uses: actions/checkout@v3
+      - run: npm install
       - run: npm ci
       - run: npm test
       - uses: EnricoMi/publish-unit-test-result-action@v2
