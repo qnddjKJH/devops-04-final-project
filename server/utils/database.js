@@ -31,6 +31,12 @@ const getUser = () => `
   FROM users;
 `;
 
+const getUserByid = (id) => `
+  SELECT *
+  FROM users
+  WHERE id = ${id};
+`;
+
 const getMission = () => `
   SELECT *
   FROM missions;
@@ -48,9 +54,9 @@ const verify = (user_id, password) => `
   WHERE user_id = "${user_id}" AND password = "${password}";
 `;
 
-const postMission = (user_id, mission, mission_reward, timelimit, is_active) => `
-  INSERT INTO missions (user_id, mission, mission_reward, timelimit, is_active)
-  VALUES ('${user_id}', '${mission}', ${mission_reward}, ${timelimit}, ${is_active});
+const postMission = (user_id, streamer_id, mission, mission_reward, timelimit, is_active) => `
+  INSERT INTO missions (user_id, streamer_id, mission, mission_reward, timelimit, is_active)
+  VALUES ('${user_id}', '${streamer_id}', '${mission}', ${mission_reward}, ${timelimit}, ${is_active});
 `
 
 const putMission = (id, mission) => `
@@ -84,8 +90,8 @@ const increaseUserCash = (id, amount) => `
   UPDATE users SET cash = cash + ${amount} WHERE id = ${id};
 `;
 
-const increaseStrimerCash = (streamername, mission_reward) => `
-  UPDATE users SET cash = cash + ${mission_reward} WHERE username = '${streamername}';
+const increaseStrimerCash = (streamerid, mission_reward) => `
+  UPDATE users SET cash = cash + ${mission_reward} WHERE id = '${streamerid}';
 `;
 
 const decreaseUserCache = (id, decreaseamount) => `
@@ -107,6 +113,7 @@ module.exports = {
     increasebet,
     increaseUserCash,
     increaseStrimerCash,
-    decreaseUserCache
+    decreaseUserCache,
+    getUserByid
   },
 };

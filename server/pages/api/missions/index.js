@@ -1,5 +1,6 @@
 import { connectDb, queries, users } from '../../../utils/database';
 import { verifyToken } from '../../../utils/jwt';
+import { handlercreate } from '../events/missioncreate.js';
 import AWS from 'aws-sdk';
 
 const { getSecrets } = require('../../../utils/secret');
@@ -28,50 +29,33 @@ export default async function handler(req, res){
         res.status(400).json('userid is undefined')
       }
 
-      const { user_id: userId, mission, mission_reward, timelimit, is_active } = req.body;
+      const { user_id: userId, streamer_id, mission, mission_reward, timelimit, is_active } = req.body;
       
       const conn = await connectDb();
-      await conn.query(queries.postMission(userId, mission, mission_reward, timelimit, is_active));
+      await conn.query(queries.postMission(userId, streamer_id, mission, mission_reward, timelimit, is_active));
       const [result] = await conn.query(queries.getPostedMission());
 
-      const params = {
-        TableName: "mission_link_dynamodb_table",
-        Item: {
-          "id" : req.body.transactionId,
-          "user_id": req.body.user_id,
-          "mission_id" : req.body.mission_id,
-          "streamer" : req.body.c,
-          "action": 'missionCreate',
-          "amount": req.body.mission_reward
-        }
-      }
-      console.log(params);
-      
-      let rep;
-    await docClient.put(params).promise()
-    .then(async data => {
-      rep = data
-    })
-    .catch(err => {
-      console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
-    });
+      handlercreate(req, res)
 
-      const [user] = await conn.query(queries.getUser());
-      const dynamouserid = req.body.user_id;
-      const userid = user[dynamouserid-1].id;
+      const requserid = req.body.user_id;
+      console.log(requserid)
+
+      const [user] = await conn.query(queries.getUserByid(requserid));
+      console.log(user)
+
+      const userid = user[0].id;
       const amount = req.body.mission_reward;
-      console.log(dynamouserid);
 
-      const cash = user[dynamouserid-1].cash
+      const cash = user[requserid-1].cash
       console.log(cash)
 
       console.log(userid);
 
-      if (dynamouserid === userid && cash >= amount) {
+      if (requserid === userid && cash >= amount) {
         await conn.query(queries.decreaseUserCache(userid, amount));
-        res.status(200).json({ message: `미션 생성!!, user cache 감소 완료: ${cash - amount}` });
+        res.status(200).json({ message: `미션 생성!!, user cash 감소 완료: ${cash - amount}` });
       } else {
-        res.status(400).send("cash is zero, 금액을 충전해 주세요");
+        res.status(400).send("금액을 충전해 주세요");
       }
       await conn.end();
     } 
