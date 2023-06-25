@@ -8,7 +8,7 @@ export default class MySqlDataSource {
   async createUser(user) {
     const connection = await this.createConnection();
     // 2023.06.20 [@ibocok0] TODO 쿼리문 작성 부탁드립니다.
-    const [result] = connection = await query(`
+    const [result] = await connection.query(`
       INSERT INTO users (id, user_id, password, username, email, role, cash, created_at, modified_at)
       VALUES (${user.id}, '${user.user_id}', '${user.password}', '${user.username}', '${user.email}', '${user.role}', ${user.cash}, '${user.created_at}', '${user.modified_at}');
     `);
@@ -19,7 +19,7 @@ export default class MySqlDataSource {
 
   async readUsers() {
     const connection = await this.createConnection();
-    const [result] = connection = await query(`
+    const [result] = await connection.query(`
       SELECT *
       FROM users;
     `);
@@ -30,7 +30,7 @@ export default class MySqlDataSource {
 
   async readUser(userId) {
     const connection = await this.createConnection();
-    const [result] = connection = await query(`
+    const [result] = await connection.query(`
       SELECT *
       FROM users
       WHERE id = ${userId};
@@ -42,22 +42,22 @@ export default class MySqlDataSource {
 
   async updateUser(userId) {
     const connection = await this.createConnection();
-    connection = await query(`
+    await connection.query(`
 
     `);
     connection.end();
 
-   return null;
+     return null;
   }
 
   async deleteUser(userId) {
     const connection = await this.createConnection();
-    connection = await query(`
+    await connection.query(`
 
     `);
     connection.end();
 
-    return null;
+    await return null;
   }
 
   async createConnection() {
