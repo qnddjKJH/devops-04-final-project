@@ -80,6 +80,18 @@ const increasebet = (missionid, increaseamount) => `
   UPDATE missions SET mission_reward = mission_reward + ${increaseamount} WHERE id = ${missionid};
 `
 
+const increaseUserCash = (id, amount) => `
+  UPDATE users SET cash = cash + ${amount} WHERE id = ${id};
+`;
+
+const increaseStrimerCash = (streamername, mission_reward) => `
+  UPDATE users SET cash = cash + ${mission_reward} WHERE username = '${streamername}';
+`;
+
+const decreaseUserCache = (id, decreaseamount) => `
+  UPDATE users SET cash = cash - ${decreaseamount} WHERE id = ${id};
+`;
+
 module.exports = {
   connectDb,
   queries: {
@@ -92,6 +104,9 @@ module.exports = {
     getPostedMission,
     deactivateMission,
     getEmail,
-    increasebet
+    increasebet,
+    increaseUserCash,
+    increaseStrimerCash,
+    decreaseUserCache
   },
 };
