@@ -14,7 +14,7 @@ export default class MySqlDataSource {
     `);
     connection.end();
 
-    return result;
+    await return result;
   }
 
   async readUsers() {
@@ -25,7 +25,7 @@ export default class MySqlDataSource {
     `);
     connection.end();
 
-    return result;
+   await return result;
   }
 
   async readUser(userId) {
@@ -37,7 +37,7 @@ export default class MySqlDataSource {
     `);
     connection.end();
 
-    return result;
+    await return result;
   }
 
   async updateUser(userId) {
@@ -47,7 +47,7 @@ export default class MySqlDataSource {
     `);
     connection.end();
 
-    return null;
+    await return null;
   }
 
   async deleteUser(userId) {
@@ -57,7 +57,7 @@ export default class MySqlDataSource {
     `);
     connection.end();
 
-    return null;
+    await return null;
   }
 
   async createConnection() {
