@@ -12,7 +12,7 @@ export default class AWSSecrets {
     try {
       const response = await client.send(
         new GetSecretValueCommand({
-          SecretId: secretName,
+          SecretId: name,
           VersionStage: 'AWSCURRENT',
         }),
       );
