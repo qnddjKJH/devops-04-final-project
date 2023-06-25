@@ -8,7 +8,7 @@ export default class SecretsManager {
   }
 
   async getDbSecret() {
-    return await this._secrets.getSecret("database");
+    return await this._secrets.getSecret("finaldb");
   }
 
   async getSecret(name) {
