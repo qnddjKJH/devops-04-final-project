@@ -1,7 +1,7 @@
 # DB 서브넷 그룹 생성
 resource "aws_db_subnet_group" "dbsg" {
   name = "mission_link_db_sg"
-  subnet_ids = var.public_subnet_ids
+  subnet_ids = var.private_subnet_ids
   tags = {
     Name = "mission_link_dbsg"
     project = "MissionLink"
