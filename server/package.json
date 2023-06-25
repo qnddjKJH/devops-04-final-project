@@ -15,7 +15,13 @@
     "@aws-sdk/client-sns": "^3.347.0",
     "autoprefixer": "10.4.14",
     "aws-sdk": "^2.1401.0",
+<<<<<<< HEAD
     "connection-string": "^4.3.6",
+=======
+    "axios": "^1.4.0",
+    "connection-string": "^4.3.6",
+    "cors": "^2.8.5",
+>>>>>>> 594309b (feat: 배팅 했을 때 미션 테이블 금액 증가, 유저 테이블 cash 감소, 미션 성공, 실패 시 금액 정산, 미션 생성 시 유저 테이블 cash 감소 기능 추가)
     "dotenv": "^16.1.4",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.5",
