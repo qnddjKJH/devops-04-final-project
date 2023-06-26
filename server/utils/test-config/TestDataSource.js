@@ -10,6 +10,8 @@ export default class TestDataSource {
         const user = process.env.TEST_MYSQL_ROOT
         const password = process.env.TEST_MYSQL_ROOT_PASSWORD
 
+        console.log(`host: ${host}, database: ${database}`)
+
         try {
             return await mysql.createConnection({ host, user, password, database });
         } catch (e) {
