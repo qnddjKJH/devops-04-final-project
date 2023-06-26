@@ -1,5 +1,4 @@
-
-class User {
+export default class User {
     constructor(id, userId, password, username, email, role, cash, createdAt, modifiedAt) {
         this.id = id;
         this.userId = userId;
@@ -12,7 +11,7 @@ class User {
         this.modifiedAt = modifiedAt;
     }
 
-    stake(amount) {
+    decreaseCash(amount) {
         if (amount <= 0) {
             throw new Error('Invalid amount');
         }
@@ -24,7 +23,7 @@ class User {
         this.cash -= amount;
     }
 
-    addCash(amount) {
+    increaseCash(amount) {
         if (amount <= 0) {
           throw new Error('Invalid amount');
         }
@@ -32,5 +31,3 @@ class User {
         this.cash += amount;
     }
 }
-
-module.exports = User;
