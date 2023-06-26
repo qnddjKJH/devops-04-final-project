@@ -50,7 +50,10 @@ class MissionRepository {
         result[0].timelimit, 
         result[0].is_active
       );
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
       return mission;
     } catch (error) {
       console.error(error.stack);
@@ -70,6 +73,10 @@ class MissionRepository {
         [userId, streamerId, mission, missionReward, timeLimit, isActive]
       );
       
+<<<<<<< HEAD
+=======
+      console.log(result)
+>>>>>>> develop
       return result.insertId;
     } catch (error) {
       console.error(error.stack);
@@ -79,9 +86,15 @@ class MissionRepository {
     }
   }
 
+<<<<<<< HEAD
   async updateMission(update) {
     const connection = await this._datasource.createConnection();
     const { id, userId, streamerId, mission, missionReward, timeLimit, isActive } = update;
+=======
+  async updateMission(id, update) {
+    const connection = await this._datasource.createConnection();
+    const { userId, streamerId, mission, missionReward, timeLimit, isActive } = update;
+>>>>>>> develop
     
     try {
 

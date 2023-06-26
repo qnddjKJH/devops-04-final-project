@@ -52,7 +52,11 @@ const INSERT_USERS = `
 const INSERT_MISSIONS = `
   INSERT INTO missions (user_id, streamer_id, mission, mission_reward, timelimit, is_active)
   VALUES
+<<<<<<< HEAD
     (2, 1, '2시간 안에 10킬', 1000, 60, true)
+=======
+    (1, 2, '2시간 안에 10킬', 1000, 60, true)
+>>>>>>> develop
 `;
 
 // 테스트 시작 전 데이터베이스 초기화 및 데이터 생성
