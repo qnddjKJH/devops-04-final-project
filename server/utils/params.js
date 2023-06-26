@@ -1,4 +1,4 @@
-const createBetParams = (missionId, amount, transactionId) => {
+const createBetParams = (userId, missionId, amount, transactionId) => {
   const betParams = {
     Entries: [
       {
@@ -9,6 +9,7 @@ const createBetParams = (missionId, amount, transactionId) => {
 
         // Main event body
         Detail: JSON.stringify({
+          userid: userId,
           missionid: missionId,
           action: "bet",
           amount: amount,
