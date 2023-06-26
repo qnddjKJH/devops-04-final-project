@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   const token = req.headers.authorization?.split(' ')[1];
   const jwt_secrets = secrets.JWT_SECRET;
   const decoded = verifyToken(token, jwt_secrets);
-   const userId = parseInt(req.req.body.userid);
+   const userId = parseInt(req.body.userid);
   const missionId = parseInt(req.body.missionid);
   const conn = await connectDb();
 
