@@ -1,6 +1,5 @@
 import { connectDb, queries, users } from '../../../utils/database';
 import { verifyToken } from '../../../utils/jwt';
-import { handlercreate } from './events/missioncreate.js';
 import AWS from 'aws-sdk';
 
 const { getSecrets } = require('../../../utils/secret');
@@ -34,8 +33,6 @@ export default async function handler(req, res){
       const conn = await connectDb();
       await conn.query(queries.postMission(userId, streamer_id, mission, mission_reward, timelimit, is_active));
       const [result] = await conn.query(queries.getPostedMission());
-
-      handlercreate(req, res)
 
       const requserid = req.body.user_id;
       console.log(requserid)
