@@ -15,7 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Start MySQL container
-        run: docker compose up -d
+        run: docker compose -d \
+            -e MYSQL_ROOT_PASSWORD=${{ secrets.TEST_MYSQL_HOST }} \
+            -e MYSQL_DATABASE=${{ secrets.TEST_MYSQL_DATABASE }} \
+            -e MYSQL_USER=${{ secrets.TEST_MYSQL_ROOT }} \
+            -e MYSQL_PASSWORD=${{ secrets.TEST_MYSQL_ROOT_PASSWORD }} \
+            up
       - name: start test
         run: npm install
       - run: npm ci
