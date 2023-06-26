@@ -45,7 +45,7 @@ export default async function handler(req, res) {
           Item: {
             "id": req.body.transactionId,
             "mission_id" : missionId,
-            "user_id": req.body.user_id,
+            "user_id": req.body.userid,
             "streamer_id" : req.body.streamer_id,
             "action": 'success',
             "amount": 0,

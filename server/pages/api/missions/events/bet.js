@@ -55,13 +55,13 @@ export default async function handler(req, res) {
 
     docClient.put(params).promise()
     .then(data => {
-      console.log(data)
+      res.status(200).json({message: '배팅 성공!!'})
     })
     .catch(err => {
       res.status(400).json({message: 'mission is undifiend'});
     });
   }
   } else {
-    res.status(401).json({ message: 'Unauthorized' });
+     res.status(401).json({ message: 'Unauthorized' });
   }
 }
