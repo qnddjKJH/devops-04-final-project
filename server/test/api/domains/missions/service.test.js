@@ -16,6 +16,8 @@ describe('MissionService test', () => {
         const missionService = await container.get(TYPES.MissionService);
         const userRepository = await container.get(TYPES.UserRepository);
 
+        // 초기값 미션 id: 1, reward: 1000
+        // 유저 id: 1, cash: 1000
         await missionService.successOnMission(1);
         const mission = await missionService.getMissionById(1);
 
@@ -28,8 +30,6 @@ describe('MissionService test', () => {
     test('deactiveMission test', async () => {
         const missionService = await container.get(TYPES.MissionService);
 
-        // 초기값 미션 id: 1, reward: 1000
-        // 유저 id: 2, cash: 10000
         await missionService.deactiveMission(1);
         const mission = await missionService.getMissionById(1);
         

@@ -1,5 +1,7 @@
 import mysql from 'mysql2/promise';
 
+require('dotenv').config();
+
 export default class TestDataSource {
 
     async createConnection() {

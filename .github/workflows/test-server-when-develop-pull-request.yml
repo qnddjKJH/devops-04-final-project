@@ -14,14 +14,22 @@ jobs:
         working-directory: ./server
     steps:
       - uses: actions/checkout@v3
+      - name: Set .env for configuration
+        run: |
+          touch ./.env.compose
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.TEST_MYSQL_HOST }}" >> ./.env.compose
+          echo "MYSQL_DATABASE=${{ secrets.TEST_MYSQL_DATABASE }}" >> ./.env.compose
+          echo "MYSQL_USER=${{ secrets.TEST_MYSQL_ROOT }}" >> ./.env.compose
+          echo "MYSQL_PASSWORD=${{ secrets.TEST_MYSQL_ROOT_PASSWORD }}" >> ./.env.compose 
+        shell: bash
       - name: Start MySQL container
-        run: docker compose up -d
+        run: docker compose --env-file ../.env.compose up -d
       - name: start test
         run: npm install
       - run: npm ci
       - run: npm test
       - name: test end & container close
-        run: docker comopose down
+        run: docker compose down
       - uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
