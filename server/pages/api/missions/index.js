@@ -1,6 +1,6 @@
 import { connectDb, queries, users } from '../../../utils/database';
 import { verifyToken } from '../../../utils/jwt';
-import { handlercreate } from '../events/missioncreate.js';
+import { handlercreate } from './events/missioncreate.js';
 import AWS from 'aws-sdk';
 
 const { getSecrets } = require('../../../utils/secret');
