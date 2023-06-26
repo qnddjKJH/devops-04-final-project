@@ -28,7 +28,9 @@ export default async function handler(req, res) {
   }
    else if (req.method === 'PUT') { 
       const conn = await connectDb();
-      const [mission] = await conn.query(queries.getMissionById(missionId));
+      
+      const mission_id = req.body.mission_id
+      const [mission] = await conn.query(queries.getMissionById(mission_id));
  
       const amount = req.body.amount;
       const increaseamount = amount;
