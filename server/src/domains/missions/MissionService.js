@@ -1,4 +1,4 @@
-const MissionRepository = require('./MissionRepository');
+const { default: Mission } = require("./MissionEntity");
 
 class MissionService {
   constructor(missionRepository, userRepository) {
@@ -8,7 +8,7 @@ class MissionService {
 
   async getAllMissions() {
     try {
-      const missions = await this.missionRepository.getAllMissions();
+      const missions = await this._missionRepository.getAllMissions();
       return missions;
     } catch (error) {
       throw new Error('Failed to get missions');
@@ -17,7 +17,7 @@ class MissionService {
 
   async getMissionById(id) {
     try {
-      const mission = await this.missionRepository.getMissionById(id);
+      const mission = await this._missionRepository.getMissionById(id);
       return mission;
     } catch (error) {
       throw new Error('Failed to get mission');
@@ -26,7 +26,7 @@ class MissionService {
 
   async createMission(mission) {
     try {
-      const createdMissionId = await this.missionRepository.createMission(mission);
+      const createdMissionId = await this._missionRepository.createMission(mission);
       return createdMissionId;
     } catch (error) {
       throw new Error('Failed to create mission');
@@ -35,7 +35,7 @@ class MissionService {
 
   async updateMission(id, mission) {
     try {
-      await this.missionRepository.updateMission(id, mission);
+      await this._missionRepository.updateMission(id, mission);
     } catch (error) {
       throw new Error('Failed to update mission');
     }
@@ -43,20 +43,55 @@ class MissionService {
 
   async deleteMission(id) {
     try {
-      await this.missionRepository.deleteMission(id);
+      await this._missionRepository.deleteMission(id);
     } catch (error) {
       throw new Error('Failed to delete mission');
     }
   }
 
-  async deactivateMission(id) {
+  async betOnMission(user_id, mission_id, amount) {
     try {
-      const mission = this.getMissionById(id);
+      const user = await this._userRepository.getUserById(user_id);
+      const mission = await this._missionRepository.getMissionById(mission_id);
 
-      mission.deactivateMission();
+      user.decreaseCash(amount);
+      mission.bet(amount);
 
-      this.updateMission(id, mission)
+      await this._userRepository.updateUser(user);
+      await this._missionRepository.updateMission(mission);
     } catch (error) {
+      console.error(error.stack);
+      throw new Error('Failed to bet on mission');
+    }
+  }
+
+  async successOnMission(mission_id) {
+    try {
+      const mission = await this._missionRepository.getMissionById(mission_id)
+      const streamer_id = mission.streamerId
+
+      const streamer = await this._userRepository.getUserById(streamer_id);
+
+      mission.setDeactive();
+      streamer.increaseCash(mission.missionReward);
+
+      await this._userRepository.updateUser(streamer);
+      await this._missionRepository.updateMission(mission);
+    } catch (error) {
+      console.error(error.stack);
+      throw new Error('Failed to seccess on mission');
+    }
+  }
+
+  async deactiveMission(mission_id) {
+    try {
+      const mission = await this._missionRepository.getMissionById(mission_id);
+
+      mission.setDeactive();
+
+      await this._missionRepository.updateMission(mission)
+    } catch (error) {
+      console.error(error.stack);
       throw new Error('Failed to deactived mission');
     }
   }
