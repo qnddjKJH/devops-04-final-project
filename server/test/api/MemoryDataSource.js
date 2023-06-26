@@ -52,7 +52,7 @@ export default class MemoryDataSource {
       cash: 20000,
       created_at: '23/06/14-09:53:52',
       modified_at: '23/06/14-09:53:52',
-    }
+    };
   }
 
   async updateUser(userId) {
@@ -67,7 +67,7 @@ export default class MemoryDataSource {
       cash: 100,
       created_at: '23/06/14-09:53:52',
       modified_at: today,
-    }
+    };
   }
 
   async deleteUser(userId) {
@@ -81,6 +81,41 @@ export default class MemoryDataSource {
       cash: 999999,
       created_at: '23/06/14-09:53:52',
       modified_at: '23/06/14-09:53:52',
-    }
+    };
+  }
+
+  async readMissions() {
+    return [
+      {
+        id: 1,
+        user_id: 1,
+        streamer_id: 2,
+        mission: '2시간 안에 10킬',
+        mission_reward: 1000,
+        timelimit: 60,
+        is_active: 1,
+      },
+      {
+        id: 2,
+        user_id: 1,
+        streamer_id: 2,
+        mission: '켠왕하면 받으세요',
+        mission_reward: 2000,
+        timelimit: 60,
+        is_active: 1,
+      },
+    ];
+  }
+
+  async readMission(missionId) {
+    return {
+      id: missionId,
+      user_id: 1,
+      streamer_id: 2,
+      mission: '2시간 안에 10킬',
+      mission_reward: 1000,
+      timelimit: 60,
+      is_active: 1,
+    };
   }
 }
