@@ -13,6 +13,8 @@ import MemorySecrets from '../test/api/MemorySecrets';
 
 import MissionRepository from '../src/domains/missions/MissionRepository';
 import MissionService from '../src/domains/missions/MissionService';
+
+import UserRepository from '../src/domains/users/UserRepository';
 import TestDataSource from './test-config/TestDataSource';
 
 export const TYPES = {
@@ -51,17 +53,19 @@ decorate(injectable(), MissionService);
 decorate(inject(TYPES.MissionRepository), MissionService, 0);
 decorate(inject(TYPES.UserRepository), MissionService, 1);
 
-
+// User 구성
+decorate(injectable(), UserRepository);
+decorate(inject(TYPES.TestDataSource), UserRepository, 0);
 
 // --------------------------------------
 
 export const container = new Container();
 container.bind(TYPES.SecretsManager).to(SecretsManager);
 container.bind(TYPES.Repository).to(Repository);
+container.bind(TYPES.UserRepository).to(UserRepository);
 container.bind(TYPES.MissionRepository).to(MissionRepository);
-// container.bind(TYPES.UserRepository).to(UserRepository);
-
 container.bind(TYPES.MissionService).to(MissionService);
+
 
 if (process.env.NODE_ENV === 'test') {
   container.bind(TYPES.DataSource).to(MemoryDataSource);

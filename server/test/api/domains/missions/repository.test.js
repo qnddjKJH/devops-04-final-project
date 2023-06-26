@@ -1,13 +1,11 @@
 import { TYPES, container } from "../../../../utils/container";
 import Mission from "../../../../src/domains/missions/MissionEntity";
 
-
 describe('MissionRepository test', () => {
     test('getAllMissions test', async () => {
         const missionRepository = container.get(TYPES.MissionRepository);
 
         const missions = await missionRepository.getAllMissions();
-        console.log(missions);
 
         expect(missions.length).toBe(1);
     })
@@ -17,7 +15,6 @@ describe('MissionRepository test', () => {
 
         const missions = await missionRepository.getAllMissions();
         const mission = missions[0]
-        console.log(mission);
 
         const findMission = await missionRepository.getMissionById(mission.id);
 
@@ -39,7 +36,6 @@ describe('MissionRepository test', () => {
         )
 
         const createId = await missionRepository.createMission(create);
-        console.log(createId);
 
         const missions = await missionRepository.getAllMissions();
 
@@ -56,7 +52,7 @@ describe('MissionRepository test', () => {
         const beforeMissionText = mission.mission;
         mission.setMission('update')
 
-        await missionRepository.updateMission(mission.id, mission);
+        await missionRepository.updateMission(mission);
 
         const after = await missionRepository.getMissionById(mission.id);
 
