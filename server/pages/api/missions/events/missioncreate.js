@@ -9,7 +9,7 @@ const docClient = new AWS.DynamoDB.DocumentClient({
   endpoint: "http://dynamodb.ap-northeast-2.amazonaws.com"
 });
 
-export default async function handler(req, res){
+export default async function handlercreate(req, res){
   const secrets = await getSecrets(secretName);
 
   const token = req.headers.authorization?.split(' ')[1];
