@@ -30,7 +30,6 @@ export default async function handler(req, res){
           await conn.query(queries.increaseUserCash(user_id, amount))
 
           await conn.query(queries.deactivateMission(missionId));
-          await conn.end();
         
         }
         await conn.end();
