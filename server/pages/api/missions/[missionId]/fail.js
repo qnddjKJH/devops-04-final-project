@@ -1,8 +1,11 @@
-import AWS from 'aws-sdk';
 import { connectDb, queries } from '../../../../utils/database';
+import { useRouter } from 'next/router'
 
 export default async function handler(req, res){
-  const missionId = req.body.mission_id
+  
+  const router = useRouter()
+  const { missionId } = router.query
+  
   if(req.method === 'PUT'){   
       const items = req.body;
 
@@ -11,6 +14,7 @@ export default async function handler(req, res){
       for (let i = 0; i < items.length; i++) {
         let user_id = items[i].user_id;
         let amount = items[i].amount;
+        
       
         const conn = await connectDb();
         let [user] = await conn.query(queries.getUserByid(user_id));

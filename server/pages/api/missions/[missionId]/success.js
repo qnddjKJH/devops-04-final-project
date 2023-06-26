@@ -1,8 +1,10 @@
 import { connectDb, queries } from '../../../../utils/database';
+import { useRouter } from 'next/router'
 
 export default async function handler(req, res){
-  const missionId = req.body.mission_id
   const conn = await connectDb();
+  const router = useRouter()
+  const { missionId } = router.query
 
   if(req.method === 'PUT'){
       const [mission] = await conn.query(queries.getMissionById(missionId))
