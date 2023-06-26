@@ -32,8 +32,8 @@ export default async function handler(req, res){
           await conn.query(queries.deactivateMission(missionId));
         
         }
-        await conn.end();
       }
+      await conn.end();
       res.status(200).json({ message : `스트리머 실패!!, 시청자에게 금액 정산 완료`});
   } else {
     res.status(400).json({ message: 'Invalid request method' });
