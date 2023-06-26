@@ -1,4 +1,5 @@
 const config = {
+  maxConcurrency: 1,
   collectCoverage: true,
   coverageReporters: ['text'],
   reporters: [
@@ -7,7 +8,8 @@ const config = {
       outputDirectory: 'coverage',
       outputName: 'junit.xml',
     }]
-  ]
+  ],
+  setupFilesAfterEnv: ['./utils/test-config/SetupTestDatabase.js'],
 }
 
 module.exports = config;

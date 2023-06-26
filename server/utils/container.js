@@ -11,14 +11,25 @@ import SecretsManager from './SecretsManager';
 import AWSSecrets from './AWSSecrets';
 import MemorySecrets from '../test/api/MemorySecrets';
 
+import MissionRepository from '../src/domains/missions/MissionRepository';
+import MissionService from '../src/domains/missions/MissionService';
+import TestDataSource from './test-config/TestDataSource';
+
 export const TYPES = {
   Repository: 'Repository',
   DataSource: 'DataSource',
   SecretsManager: 'SecretsManager',
-  Secrets: 'Secrets'
+  Secrets: 'Secrets',
+  UserRepository: 'UserRepository',
+  MissionRepository: 'MissionRepository',
+  MissionService: 'MissionService',
+  TestDataSource: 'TestDataSource',
 };
 
 // --------------------------------------
+
+// Test 환경
+decorate(injectable(), TestDataSource);
 
 // 2023.06.20 [@ibocok0] Secret 구성
 decorate(injectable(), AWSSecrets);
@@ -33,16 +44,31 @@ decorate(injectable(), MemoryDataSource);
 decorate(injectable(), Repository);
 decorate(inject(TYPES.DataSource), Repository, 0);
 
+// Mission 구성
+decorate(injectable(), MissionRepository);
+decorate(inject(TYPES.TestDataSource), MissionRepository, 0);
+decorate(injectable(), MissionService);
+decorate(inject(TYPES.MissionRepository), MissionService, 0);
+decorate(inject(TYPES.UserRepository), MissionService, 1);
+
+
+
 // --------------------------------------
 
 export const container = new Container();
-container.bind(TYPES.Repository).to(Repository);
 container.bind(TYPES.SecretsManager).to(SecretsManager);
+container.bind(TYPES.Repository).to(Repository);
+container.bind(TYPES.MissionRepository).to(MissionRepository);
+// container.bind(TYPES.UserRepository).to(UserRepository);
+
+container.bind(TYPES.MissionService).to(MissionService);
 
 if (process.env.NODE_ENV === 'test') {
   container.bind(TYPES.DataSource).to(MemoryDataSource);
   container.bind(TYPES.Secrets).to(MemorySecrets);
+  container.bind(TYPES.TestDataSource).to(TestDataSource);
 } else {
   container.bind(TYPES.DataSource).to(MySqlDataSource);
+  container.bind(TYPES.TestDataSource).to(MySqlDataSource);
   container.bind(TYPES.Secrets).to(AWSSecrets);
 }

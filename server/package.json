@@ -7,15 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "dependencies": {
     "@aws-sdk/client-eventbridge": "^3.347.0",
     "@aws-sdk/client-secrets-manager": "^3.347.0",
     "@aws-sdk/client-sns": "^3.347.0",
     "autoprefixer": "10.4.14",
-    "connection-string": "^4.3.6",
     "aws-sdk": "^2.1401.0",
+    "connection-string": "^4.3.6",
     "dotenv": "^16.1.4",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.5",
