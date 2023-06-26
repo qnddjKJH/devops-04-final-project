@@ -1,4 +1,4 @@
-import { connectDb, queries, users } from '../../../../utils/database';
+import { connectDb, queries } from '../../../../utils/database';
 import { verifyToken } from '../../../../utils/jwt';
 
 const { getSecrets } = require('../../../../utils/secret');

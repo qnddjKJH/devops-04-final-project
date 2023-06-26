@@ -6,7 +6,7 @@
 #
 # eks 서비스가 다른 aws 서비스를 관리하기 위한 iam 역할 생성
 resource "aws_iam_role" "missiont_link_cluster_role" {
-  name = "missiont_link_eks_cluster_role"
+  name = "mission-link-eks-cluster-role"
 
   assume_role_policy = <<POLICY
 {
