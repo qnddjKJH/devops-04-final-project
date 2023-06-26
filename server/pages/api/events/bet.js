@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { verifyToken } from '../../../utils/jwt';
 import { createBetParams } from '../../../utils/params';
 import { sendEvent } from '../../../utils/eventBridgeClient';
@@ -67,3 +68,33 @@ export default async function handlerbet(req, res) {
 module.exports = {
   handlerbet
 };
+=======
+
+import { connectDb, queries, users } from '../../../utils/database';
+
+export default async function handler(req, res){
+    const conn = await connectDb();
+    if (req.method === 'PATCH') {
+       const [result] = await conn.query(queries.getMission());
+    
+      const missionid = req.body.missionid;
+      const amount = req.body.amount;
+      const increaseamount = amount;
+
+      const foundmission = result.filter(item => missionid === item.id);
+      console.log(foundmission);
+
+      const mission_reward = foundmission[0].mission_reward;
+      console.log(mission_reward);
+    
+      await conn.query(queries.increasebet(missionid, increaseamount));
+
+      res.status(200).json({ message: `mission_reward 증가 완료: ${mission_reward + increaseamount}`});
+
+      await conn.end();
+    } else {
+      return res.status(400).json({ message: "미션 없음" });
+    }
+
+  }
+>>>>>>> 9eec436 (feat: 배팅 했을 때 미션 테이블 금액 증가, 유저 테이블 cash 감소, 미션 성공, 실패 시 금액 정산, 미션 생성 시 유저 테이블 cash 감소 기능 추가)
