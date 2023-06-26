@@ -1,10 +1,9 @@
 import { connectDb, queries } from '../../../../utils/database';
-import { useRouter } from 'next/router'
 
 export default async function handler(req, res) {
 
-  const router = useRouter()
-  const { missionId } = router.query
+  const missionId = req.query.missionId
+  console.log(missionId)
 
     if (req.method === 'POST') {
       const requserid = req.body.user_id;
