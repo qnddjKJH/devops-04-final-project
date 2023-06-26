@@ -40,16 +40,15 @@ export default async function handler(req, res){
       const [user] = await conn.query(queries.getUserByid(requserid));
       console.log(user)
 
-      const {user_id} = user;
+      const {id} = user;
       const amount = req.body.mission_reward;
 
       const { cash } = user;
       console.log(cash)
 
-      console.log(user_id);
 
-      if (requserid === user_id && cash >= amount) {
-        await conn.query(queries.decreaseUserCache(user_id, amount));
+      if (requserid === id && cash >= amount) {
+        await conn.query(queries.decreaseUserCache(id, amount));
         res.status(200).json({ message: `미션 생성!!, user cash 감소 완료: ${cash - amount}` });
       } else {
         res.status(400).send("금액을 충전해 주세요");
