@@ -23,7 +23,8 @@ jobs:
           echo "TEST_MYSQL_ROOT=${{ secrets.TEST_MYSQL_ROOT }}" >> ./.env
           echo "TEST_MYSQL_ROOT_PASSWORD=${{ secrets.TEST_MYSQL_ROOT_PASSWORD }}" >> ./.env 
         shell: bash
-
+      - name: check .env
+        run: cat ./.env
       - name: Start MySQL container
         run: docker compose --env-file ./.env up -d
 
