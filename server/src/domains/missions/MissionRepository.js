@@ -51,9 +51,13 @@ class MissionRepository {
         result[0].is_active
       );
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> develop
+=======
+
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
       return mission;
     } catch (error) {
       console.error(error.stack);
@@ -74,9 +78,12 @@ class MissionRepository {
       );
       
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       console.log(result)
 >>>>>>> develop
+=======
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
       return result.insertId;
     } catch (error) {
       console.error(error.stack);
@@ -87,6 +94,7 @@ class MissionRepository {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   async updateMission(update) {
     const connection = await this._datasource.createConnection();
     const { id, userId, streamerId, mission, missionReward, timeLimit, isActive } = update;
@@ -95,6 +103,11 @@ class MissionRepository {
     const connection = await this._datasource.createConnection();
     const { userId, streamerId, mission, missionReward, timeLimit, isActive } = update;
 >>>>>>> develop
+=======
+  async updateMission(update) {
+    const connection = await this._datasource.createConnection();
+    const { id, userId, streamerId, mission, missionReward, timeLimit, isActive } = update;
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
     
     try {
 

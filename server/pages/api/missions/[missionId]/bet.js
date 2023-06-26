@@ -1,6 +1,7 @@
 import { connectDb, queries } from '../../../../utils/database';
 
 export default async function handler(req, res) {
+<<<<<<< HEAD
 
 <<<<<<< HEAD
   const missionId = req.query.missionId
@@ -15,6 +16,9 @@ export default async function handler(req, res) {
 
     if (req.method === 'POST') {
 <<<<<<< HEAD
+=======
+    if (req.method === 'POST') {
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
       const requserid = req.body.user_id;
       const conn = await connectDb();
       const [user] = await conn.query(queries.getUserByid(requserid));
@@ -36,10 +40,16 @@ export default async function handler(req, res) {
       }
   }
    else if (req.method === 'PUT') { 
+<<<<<<< HEAD
       const conn = await connectDb();
       
       const mission_id = req.body.mission_id
       const [mission] = await conn.query(queries.getMissionById(mission_id));
+=======
+      const reqMissionid = req.body.missionid;
+      const conn = await connectDb();
+      const [mission] = await conn.query(queries.getMissionById(reqMissionid));
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
  
       const amount = req.body.amount;
       const increaseamount = amount;
@@ -50,6 +60,7 @@ export default async function handler(req, res) {
  
       await conn.query(queries.increasebet(missionid, increaseamount));
       await conn.end();
+<<<<<<< HEAD
 
       return res.status(200).json({ message: `mission_reward 증가 완료: ${mission_reward + increaseamount}`});
     } else {
@@ -114,6 +125,12 @@ export default async function handler(req, res) {
 } else {
   res.status(401).json({ message: 'Unauthorized' });
 >>>>>>> 9eec436 (feat: 배팅 했을 때 미션 테이블 금액 증가, 유저 테이블 cash 감소, 미션 성공, 실패 시 금액 정산, 미션 생성 시 유저 테이블 cash 감소 기능 추가)
+=======
+
+      return res.status(200).json({ message: `mission_reward 증가 완료: ${mission_reward + increaseamount}`});
+    } else {
+      return res.status(400).json({ message: "미션 없음" });
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
   }
   
 } 

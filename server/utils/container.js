@@ -14,10 +14,15 @@ import MemorySecrets from '../test/api/MemorySecrets';
 import MissionRepository from '../src/domains/missions/MissionRepository';
 import MissionService from '../src/domains/missions/MissionService';
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import UserRepository from '../src/domains/users/UserRepository';
 =======
 >>>>>>> develop
+=======
+
+import UserRepository from '../src/domains/users/UserRepository';
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
 import TestDataSource from './test-config/TestDataSource';
 
 export const TYPES = {
@@ -57,12 +62,18 @@ decorate(inject(TYPES.MissionRepository), MissionService, 0);
 decorate(inject(TYPES.UserRepository), MissionService, 1);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // User 구성
 decorate(injectable(), UserRepository);
 decorate(inject(TYPES.TestDataSource), UserRepository, 0);
 =======
 
 >>>>>>> develop
+=======
+// User 구성
+decorate(injectable(), UserRepository);
+decorate(inject(TYPES.TestDataSource), UserRepository, 0);
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
 
 // --------------------------------------
 
@@ -70,16 +81,19 @@ export const container = new Container();
 container.bind(TYPES.SecretsManager).to(SecretsManager);
 container.bind(TYPES.Repository).to(Repository);
 <<<<<<< HEAD
+<<<<<<< HEAD
 container.bind(TYPES.UserRepository).to(UserRepository);
 container.bind(TYPES.MissionRepository).to(MissionRepository);
 container.bind(TYPES.MissionService).to(MissionService);
 
 =======
+=======
+container.bind(TYPES.UserRepository).to(UserRepository);
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
 container.bind(TYPES.MissionRepository).to(MissionRepository);
-// container.bind(TYPES.UserRepository).to(UserRepository);
-
 container.bind(TYPES.MissionService).to(MissionService);
 >>>>>>> develop
+
 
 if (process.env.NODE_ENV === 'test') {
   container.bind(TYPES.DataSource).to(MemoryDataSource);

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { connectDb, queries } from '../../../../utils/database';
 =======
 import { verifyToken } from '../../../../utils/jwt';
@@ -41,10 +42,19 @@ const docClient = new AWS.DynamoDB.DocumentClient({
   region: 'ap-northeast-2',
   endpoint: "http://dynamodb.ap-northeast-2.amazonaws.com"
 });
+=======
+import { connectDb, queries } from '../../../../utils/database';
 
-export default async function handler(req, res) {
-  const secrets = await getSecrets(secretName);
+export default async function handler(req, res){
+  const missionId = req.body.mission_id
+  const conn = await connectDb();
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
 
+  if(req.method === 'PUT'){
+      const [mission] = await conn.query(queries.getMissionById(missionId))
+      console.log(mission)
+
+<<<<<<< HEAD
   const token = req.headers.authorization?.split(' ')[1];
   const jwt_secrets = secrets.JWT_SECRET;
   const decoded = verifyToken(token, jwt_secrets);
@@ -87,6 +97,22 @@ export default async function handler(req, res) {
         res.status(400).json({message: 'mission is undifiend'});
       });
 >>>>>>> 9eec436 (feat: 배팅 했을 때 미션 테이블 금액 증가, 유저 테이블 cash 감소, 미션 성공, 실패 시 금액 정산, 미션 생성 시 유저 테이블 cash 감소 기능 추가)
+=======
+      const mission_reward = mission[0].mission_reward
+      console.log(mission_reward);
+
+      var streamer_id = mission[0].streamer_id
+      console.log(streamer_id)
+
+    
+      await conn.query(queries.increaseStrimerCash(streamer_id, mission_reward))
+      res.status(200).send("스트리머 성공!!, 스트리머에게 금액 정산 완료");
+
+      await conn.query(queries.deactivateMission(missionId))
+  
+    } else {
+        res.status(400).send('요청 에러');
+>>>>>>> 451598d1bd15a7698a6d699f191de9170435a967
     }
     await conn.end();
 };
