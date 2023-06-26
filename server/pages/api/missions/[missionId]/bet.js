@@ -1,6 +1,10 @@
 import { connectDb, queries } from '../../../../utils/database';
 
 export default async function handler(req, res) {
+
+  const missionId = req.query.missionId
+  console.log(missionId)
+
     if (req.method === 'POST') {
       const requserid = req.body.user_id;
       const conn = await connectDb();
@@ -23,9 +27,8 @@ export default async function handler(req, res) {
       }
   }
    else if (req.method === 'PUT') { 
-      const reqMissionid = req.body.missionid;
       const conn = await connectDb();
-      const [mission] = await conn.query(queries.getMissionById(reqMissionid));
+      const [mission] = await conn.query(queries.getMissionById(missionId));
  
       const amount = req.body.amount;
       const increaseamount = amount;

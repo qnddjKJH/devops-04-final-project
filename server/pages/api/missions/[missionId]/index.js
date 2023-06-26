@@ -5,7 +5,8 @@ const { getSecrets } = require('../../../../utils/secret');
 const secretName = 'finaldb';
 
 export default async function handler(req, res) {
-  const missionId = parseInt(req.query.missionId);
+
+  const missionId = req.query.missionId
 
   const conn = await connectDb();
   const secrets = await getSecrets(secretName);
