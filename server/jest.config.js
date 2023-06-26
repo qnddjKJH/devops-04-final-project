@@ -10,6 +10,7 @@ const config = {
     }]
   ],
   setupFilesAfterEnv: ['./utils/test-config/SetupTestDatabase.js'],
+  testPathIgnorePatterns: ['.next/*'],
 }
 
 module.exports = config;
