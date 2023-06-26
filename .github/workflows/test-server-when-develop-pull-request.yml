@@ -23,7 +23,7 @@ jobs:
           echo "MYSQL_PASSWORD=${{ secrets.TEST_MYSQL_ROOT_PASSWORD }}" >> ./.env.compose 
         shell: bash
       - name: Start MySQL container
-        run: docker compose --env-file ../.env.compose up -d
+        run: docker compose --env-file ./.env.compose up -d
       - name: start test
         run: npm install
       - run: npm ci
