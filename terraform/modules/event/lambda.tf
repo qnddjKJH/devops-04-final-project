@@ -5,7 +5,7 @@ module "mission_link_bet_lambda" {
   # insert the 28 required variables here
   function_name = "mission_link_bet_lambda"
   description   = "Generates a new profiles"
-  handler       = "index.lambdaHandler"
+  handler       = "bet.handler"
   runtime       = "nodejs14.x"
   source_path   = "${path.module}/source"
 
@@ -22,7 +22,7 @@ module "mission_link_success_lambda" {
   # insert the 28 required variables here
   function_name = "mission_link_success_lambda"
   description   = "Generates a new profiles"
-  handler       = "index.lambdaHandler"
+  handler       = "success.handler"
   runtime       = "nodejs14.x"
   source_path   = "${path.module}/source"
 
@@ -39,7 +39,7 @@ module "mission_link_fail_lambda" {
   # insert the 28 required variables here
   function_name = "mission_link_fail_lambda"
   description   = "Generates a new profiles"
-  handler       = "index.lambdaHandler"
+  handler       = "fail.handler"
   runtime       = "nodejs14.x"
   source_path   = "${path.module}/source"
 
