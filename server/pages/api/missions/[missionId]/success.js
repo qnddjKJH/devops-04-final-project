@@ -1,7 +1,8 @@
 import { connectDb, queries } from '../../../../utils/database';
 
 export default async function handler(req, res){
-  const missionId = req.body.mission_id
+
+  const missionId = req.query.missionId
   const conn = await connectDb();
 
   if(req.method === 'PUT'){
