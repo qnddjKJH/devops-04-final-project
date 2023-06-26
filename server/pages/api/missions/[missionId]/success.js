@@ -1,35 +1,29 @@
-import { verifyToken } from '../../../../utils/jwt';
-import { missionresultParams } from '../../../../utils/params';
-import { sendEvent } from '../../../../utils/eventBridgeClient';
-import {
-  createSubscription,
-  publishtoTopic,
-} from '../../../../utils/snsClient';
+import { connectDb, queries } from '../../../../utils/database';
 
-const { getSecrets } = require('../../../../utils/secret');
-const secretName = 'finaldb';
+export default async function handler(req, res){
 
-export default async function handler(req, res) {
-  const secrets = await getSecrets(secretName);
+  const missionId = req.query.missionId
+  const conn = await connectDb();
 
-  const token = req.headers.authorization?.split(' ')[1];
-  const jwt_secrets = secrets.JWT_SECRET;
-  const decoded = verifyToken(token, jwt_secrets);
+  if(req.method === 'PUT'){
+      const [mission] = await conn.query(queries.getMissionById(missionId))
+      console.log(mission)
 
-  if (decoded) {
-    if (req.method === 'POST') {
-      const event = missionresultParams(
-        req.body.id,
-        req.body.transactionId,
-        'success',
-      );
+      const mission_reward = mission[0].mission_reward
+      console.log(mission_reward);
 
-      createSubscription(req.body.id, 'success');
-      sendEvent(event);
+      var streamer_id = mission[0].streamer_id
+      console.log(streamer_id)
 
-      res.status(200).json({ message: '미션 성공 요청 전송 완료' });
+    
+      await conn.query(queries.increaseStrimerCash(streamer_id, mission_reward))
+      res.status(200).send("스트리머 성공!!, 스트리머에게 금액 정산 완료");
+
+      await conn.query(queries.deactivateMission(missionId))
+  
+    } else {
+        res.status(400).send('요청 에러');
     }
-  } else {
-    res.status(401).json({ message: 'Unauthorized' });
-  }
-}
+    await conn.end();
+};
+

@@ -1,35 +1,42 @@
-import { verifyToken } from '../../../../utils/jwt';
-import { missionresultParams } from '../../../../utils/params';
-import { sendEvent } from '../../../../utils/eventBridgeClient';
-import {
-  createSubscription,
-  publishtoTopic,
-} from '../../../../utils/snsClient';
+import { connectDb, queries } from '../../../../utils/database';
 
-const { getSecrets } = require('../../../../utils/secret');
-const secretName = 'finaldb';
+export default async function handler(req, res){
 
-export default async function handler(req, res) {
-  const secrets = await getSecrets(secretName);
+  const missionId  = req.query.missionId
 
-  const token = req.headers.authorization?.split(' ')[1];
-  const jwt_secrets = secrets.JWT_SECRET;
-  const decoded = verifyToken(token, jwt_secrets);
+  const conn = await connectDb();
+  
+  if(req.method === 'PUT'){   
+      const items = req.body;
 
-  if (decoded) {
-    if (req.method === 'POST') {
-      const event = missionresultParams(
-        req.body.id,
-        req.body.transactionId,
-        'fail',
-      );
+      console.log(items)
 
-      createSubscription(req.body.id, 'fail');
-      sendEvent(event);
+      for (let i = 0; i < items.length; i++) {
+        let user_id = items[i].user_id;
+        console.log(user_id)
+        let amount = items[i].amount;
+        
+        let [user] = await conn.query(queries.getUserByid(user_id));
+        console.log(user);
+      
+        if (user.length > 0) {
+          let cash = user[0].cash;
+          console.log(cash);
+      
+          if (isNaN(amount)) {
+            amount = 0; // 유효하지 않은 값이면 0으로 설정
+          }
+      
+          await conn.query(queries.increaseUserCash(user_id, amount))
 
-      res.status(200).json({ message: '미션 실패 요청 전송 완료' });
-    }
+          await conn.query(queries.deactivateMission(missionId));
+          await conn.end();
+        
+        }
+        await conn.end();
+      }
+      res.status(200).json({ message : `스트리머 실패!!, 시청자에게 금액 정산 완료`});
   } else {
-    res.status(401).json({ message: 'Unauthorized' });
+    res.status(400).json({ message: 'Invalid request method' });
   }
 }
