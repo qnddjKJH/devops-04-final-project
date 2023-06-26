@@ -1,11 +1,7 @@
 import { connectDb, queries } from '../../../../utils/database';
-import { handlerbet } from '../../events/bet.js';
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-      
-      handlerbet(req, res)
-
       const requserid = req.body.user_id;
       const conn = await connectDb();
       const [user] = await conn.query(queries.getUserByid(requserid));

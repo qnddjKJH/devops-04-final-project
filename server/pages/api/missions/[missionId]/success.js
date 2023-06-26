@@ -1,15 +1,10 @@
 import { connectDb, queries } from '../../../../utils/database';
-import { handlersuccess } from '../../events/success.js';
 
 export default async function handler(req, res){
   const missionId = req.body.mission_id
   const conn = await connectDb();
 
-  if(req.method === 'POST'){
-    handlersuccess(req, res)
-  }
-    
-  else if(req.method === 'PUT'){
+  if(req.method === 'PUT'){
       const [mission] = await conn.query(queries.getMissionById(missionId))
       console.log(mission)
 
