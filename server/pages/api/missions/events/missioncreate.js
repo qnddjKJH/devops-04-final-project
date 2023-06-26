@@ -22,11 +22,11 @@ if (decoded) {
       TableName: "mission_link_dynamodb_table",
       Item: {
         "id" : req.body.transactionId,
-        "user_id": req.body.user_id,
+        "user_id": req.body.userid,
         "mission_id" : req.body.missionid,
         "streamer_id" : req.body.streamer_id,
         "action": 'missionCreate',
-        "amount": req.body.mission_reward
+        "amount": req.body.amount
       }
     }
   console.log(params);

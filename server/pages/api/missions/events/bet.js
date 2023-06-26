@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   const token = req.headers.authorization?.split(' ')[1];
   const jwt_secrets = secrets.JWT_SECRET;
   const decoded = verifyToken(token, jwt_secrets);
-   const userId = parseInt(req.req.body.userid);
+   const userId = parseInt(req.body.userid);
   const missionId = parseInt(req.body.missionid);
   const conn = await connectDb();
 
@@ -55,13 +55,13 @@ export default async function handler(req, res) {
 
     docClient.put(params).promise()
     .then(data => {
-      console.log(data)
+      res.status(200).json({message: '배팅 성공!!'})
     })
     .catch(err => {
       res.status(400).json({message: 'mission is undifiend'});
     });
   }
   } else {
-    res.status(401).json({ message: 'Unauthorized' });
+     res.status(401).json({ message: 'Unauthorized' });
   }
 }
