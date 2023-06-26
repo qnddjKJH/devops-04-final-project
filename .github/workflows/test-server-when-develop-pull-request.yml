@@ -15,18 +15,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set .env for configuration
-        run: |
-          touch ./.env
-          echo "TEST_MYSQL_HOST=$TEST_MYSQL_HOST" >> ./.env
-          echo "TEST_MYSQL_DATABASE=$TEST_MYSQL_DATABASE" >> ./.env
-          echo "TEST_MYSQL_ROOT=$TEST_MYSQL_ROOT" >> ./.env
-          echo "TEST_MYSQL_ROOT_PASSWORD=$TEST_MYSQL_ROOT_PASSWORD" >> ./.env 
-        env:
-          TEST_MYSQL_HOST: ${{ secrets.TEST_MYSQL_HOST }}
-          TEST_MYSQL_DATABASE: ${{ secrets.TEST_MYSQL_DATABASE }}
-          TEST_MYSQL_ROOT: ${{ secrets.TEST_MYSQL_ROOT }}
-          TEST_MYSQL_ROOT_PASSWORD: ${{ secrets.TEST_MYSQL_ROOT_PASSWORD }}
+      # - name: Set .env for configuration
+      #   run: |
+      #     touch ./.env
+      #     echo "TEST_MYSQL_HOST=$TEST_MYSQL_HOST" >> ./.env
+      #     echo "TEST_MYSQL_DATABASE=$TEST_MYSQL_DATABASE" >> ./.env
+      #     echo "TEST_MYSQL_ROOT=$TEST_MYSQL_ROOT" >> ./.env
+      #     echo "TEST_MYSQL_ROOT_PASSWORD=$TEST_MYSQL_ROOT_PASSWORD" >> ./.env 
+      #   env:
+      #     TEST_MYSQL_HOST: ${{ secrets.TEST_MYSQL_HOST }}
+      #     TEST_MYSQL_DATABASE: ${{ secrets.TEST_MYSQL_DATABASE }}
+      #     TEST_MYSQL_ROOT: ${{ secrets.TEST_MYSQL_ROOT }}
+      #     TEST_MYSQL_ROOT_PASSWORD: ${{ secrets.TEST_MYSQL_ROOT_PASSWORD }}
       - name: check .env
         run: cat ./.env
       - name: Start MySQL container
