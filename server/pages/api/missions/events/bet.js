@@ -18,12 +18,14 @@ export default async function handler(req, res) {
   const token = req.headers.authorization?.split(' ')[1];
   const jwt_secrets = secrets.JWT_SECRET;
   const decoded = verifyToken(token, jwt_secrets);
+   const userId = parseInt(req.req.body.userid);
   const missionId = parseInt(req.body.missionid);
   const conn = await connectDb();
 
   if (decoded) {
     if (req.method === 'POST') {
       const event = createBetParams(
+        userId,
         missionId,
         req.body.amount,
         req.body.transactionId
@@ -41,7 +43,7 @@ export default async function handler(req, res) {
           Item: {
             "id": req.body.transactionId,
             "mission_id" : missionId,
-            "user_id": req.body.user_id,
+            "user_id": userId,
             "streamer_id" : req.body.streamer_id,
             "action": "bet",
             "amount": req.body.amount,
