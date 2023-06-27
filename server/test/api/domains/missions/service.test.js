@@ -1,6 +1,20 @@
 import { TYPES, container } from "../../../../utils/container";
 
 describe('MissionService test', () => {
+    test('updateMission test', async () => {
+        const missionService = await container.get(TYPES.MissionService);
+
+        const update = {
+            mission: 'update', 
+            timelimit: 999
+        }
+
+        const mission = await missionService.updateMission(1, update)
+
+        expect(mission.mission).toBe(update.mission)
+        expect(mission.timelimit).toBe(update.timelimit)
+    })
+
     test('betOnMission test', async () => {
         const missionService = await container.get(TYPES.MissionService);
 
