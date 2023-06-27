@@ -6,8 +6,7 @@ describe('MissionService test', () => {
 
         // 초기값 미션 id: 1, reward: 1000
         // 유저 id: 2, cash: 10000
-        await missionService.betOnMission(2, 1, 2000);
-        const mission = await missionService.getMissionById(1);
+        const mission = await missionService.betOnMission(2, 1, 2000);
 
         expect(mission.missionReward).toBe(3000);
     })
@@ -34,7 +33,7 @@ describe('MissionService test', () => {
         const mission = await missionService.getMissionById(1);
         
         // mysql 에는 boolean 숫자로 저장된다. 따로 설정 해줘야함
-        // 1: true, 2: false
+        // 1: true, 0: false
         expect(mission.isActive).toBe(0);
     })
 })
