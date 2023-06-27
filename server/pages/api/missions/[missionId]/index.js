@@ -2,6 +2,8 @@ import { TYPES, container } from '../../../../utils/container';
 import { verifyToken } from '../../../../utils/jwt';
 
 export default async function handler(req, res) {
+  const METHOD = req.method;
+
   const secretsManager = container.get(TYPES.SecretsManager)
 
   const secrets = await secretsManager.getJwtSecret();
