@@ -10,29 +10,30 @@ export default async function handler(req, res) {
   }
 }
 
-  export const handlePut = async (req, res) => {
-    const { missionId } = req.query;
+export const handlePut = async (req, res) => {
+  const { missionId } = req.query;
 
-    const {
-      user_id, 
-      amount 
-    } = req.body
+  const {
+    user_id, 
+    amount 
+  } = req.body
 
-    try {
-      const missionService = container.get(TYPES.MissionService);
+  try {
+    const missionService = container.get(TYPES.MissionService);
 
-      const mission = await missionService.betOnMission(user_id, missionId, amount);
+    const mission = await missionService.betOnMission(user_id, missionId, amount);
 
-      const data = {
-        message: 'Successful mission betting',
-        data: mission
-      }
-
-      return res.status(200).json(data);
-    } catch (error) {
-      console.error(error.stack);
-      throw new Error('미션 베팅 실패');
+    const data = {
+      message: 'Successful mission betting',
+      data: mission
     }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error(error.stack);
+    const errorMessage = 'error fail on mission';
+    return res.status(500).json({ error: errorMessage });
   }
+}
+
   
-    
