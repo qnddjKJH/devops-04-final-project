@@ -37,7 +37,7 @@ export default async function handler(req, res){
       const requserid = req.body.user_id;
       console.log(requserid)
 
-      const user = await conn.query(queries.getUserByid(requserid));
+      const [user] = await conn.query(queries.getUserByid(requserid));
       console.log(user)
 
       const userid = user[0].id;
