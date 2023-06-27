@@ -36,4 +36,20 @@ describe('MissionService test', () => {
         // 1: true, 0: false
         expect(mission.isActive).toBe(0);
     })
+
+    test('deactiveMission test', async () => {
+        const items = [
+            { id: 2, userId: 2, amount: 1000 },
+        ];
+        
+        const missionService = await container.get(TYPES.MissionService);
+        const userRepository = await container.get(TYPES.UserRepository);
+
+        await missionService.failOnMission(1, items);
+        const user = await userRepository.getUserById(items[0].userId);
+        const mission = await missionService.getMissionById(1);
+
+        expect(user.cash).toBe(11000);
+        expect(mission.isActive).toBe(0);
+    })
 })
