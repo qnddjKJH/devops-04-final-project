@@ -1,22 +1,22 @@
 # Project: Mission Link
 JavaScript + Node.js + Nextjs 미션 관리 서비스 <br><br><br>
 
-# 프로젝트 소개
+# 💻 프로젝트 소개
 트윕(트위치 미션관리 시스템)에서 영감을 받아, 스트리머에게 미션을 걸고, 미션 성공 실패에 따른 보상을 지급하는 서비스<br><br><br>
 
 
-# 개발 기간
+# ⌚ 개발 기간
 23/06/12 ~ 23/06/27 <br><br><br>
 
 
-## 멤버 구성
+## 👬 멤버 구성
 팀장 이주형: CI/CD 구현 및 WAS missions Endpoint, 모니터링 구성<br>
 팀원 김종훈:<br>
 팀원 김예성:<br>
 팀원 이상협:<br>
 <br><br><br>
 
-## 사용 기술 스택
+## 🎏 사용 기술 스택
 사용언어: <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black"><br>
 플랫폼: <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"><br>
 패키지 관리자: <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white"> <br>
@@ -29,7 +29,7 @@ CI/CD 파이프라인: <img src="https://img.shields.io/badge/githubactions-2088
 
 <br><br>
 
-## 스택 선정 이유
+## 📔 스택 선정 이유
 language - javascript<br>
 팀원들의 코딩 수준이 비슷한 자바스크립트 채택
 
@@ -55,13 +55,13 @@ IaC와 CI/CD, 모니터링 기술 스택은 대중적인 스택이라 이번 프
 
 <br><br><br>
 
-# 아키텍처 다이어그램
+# 💡 아키텍처 다이어그램
 ![alt text](images/diagram.png)
 
 <br><br><br>
 
 
-# 인프라 특징
+# 📌 인프라 특징
 - 해당 서비스는 EKS 쿠버네티스 클러스터에 구성되어 있다
 - WAS는 EKS 워커 노드로써 구현되어 있다
 - WAS의 특정 이벤트를 수신하는 Eventbridge 구성
@@ -75,7 +75,7 @@ IaC와 CI/CD, 모니터링 기술 스택은 대중적인 스택이라 이번 프
 
 <br><br><br>
 
-# 주요기능
+# 📌 주요기능
 로그인 기능
 - req.body에 포함된 userid와 password를 RDS에서 조회하여 검증
 - 검증된다면 JWT 토큰 발급
