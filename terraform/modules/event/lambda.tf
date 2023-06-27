@@ -6,8 +6,9 @@ module "mission_link_bet_lambda" {
   function_name = "mission_link_bet_lambda"
   description   = "Generates a new profiles"
   handler       = "bet.handler"
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs18.x"
   source_path   = "${path.module}/source"
+  timeout       = 300
 
   tags = {
     Name = "mission_link_bet_lambda"
@@ -23,8 +24,10 @@ module "mission_link_success_lambda" {
   function_name = "mission_link_success_lambda"
   description   = "Generates a new profiles"
   handler       = "success.handler"
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs18.x"
   source_path   = "${path.module}/source"
+  timeout       = 300
+
 
   tags = {
     Name = "mission_link_success_lambda"
@@ -40,8 +43,9 @@ module "mission_link_fail_lambda" {
   function_name = "mission_link_fail_lambda"
   description   = "Generates a new profiles"
   handler       = "fail.handler"
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs18.x"
   source_path   = "${path.module}/source"
+  timeout       = 300
 
   tags = {
     Name = "mission_link_fail_lambda"
