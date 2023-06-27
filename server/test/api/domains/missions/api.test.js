@@ -1,35 +1,7 @@
 import { createMocks } from "node-mocks-http";
 import { handlePut as betHandlePut } from "../../../../pages/api/missions/[missionId]/bet";
 import { handlePut as failHandlePut } from "../../../../pages/api/missions/[missionId]/fail";
-
-// MissionService 에서 사용하는 repository 를 모킹하여 사용할 모킹 객체 생성
-const mockMissionRepository = {
-    getMissionById: jest.fn(),
-  };
-
-const mockUserRepository = {
-    getUserById: jest.fn(),
-};
-
-const mockMission = {
-    id: 1,
-    userId: 2,
-    streamerId: 1,
-    mission: '2시간 안에 10킬', 
-    missionReward: 3000, 
-    timelimit: 60, 
-    isActive: 1
-}
-
-const mockUser = {
-    id: 2,
-    userId: 'test1234',
-    password: '1111',
-    username: 'test',
-    email: 'test@gmail.com',
-    role: 'ROLE_USER',
-    cash: 10000
-}
+import { handlePut as successHandlePut } from "../../../../pages/api/missions/[missionId]/success";
 
 describe('/api/missions/[missionId]/bet', () => {
     test('when request /api/missions/[missionId]/bet', async () => {
@@ -80,5 +52,23 @@ describe('/api/missions/[missionId]/bet', () => {
     
         const data = res._getJSONData();
         expect(data.message).toBe('fail mission process success');
+    })
+
+    test('when request /api/missions/[missionId]/success', async () => {
+
+        const { req, res } = createMocks({
+            url: '/api/missions/1/success',
+            method: 'PUT',
+            query: {
+                missionId: 1,
+            }
+        });
+    
+        await successHandlePut(req, res);
+    
+        expect(res._getStatusCode()).toBe(200);
+    
+        const data = res._getJSONData();
+        expect(data.message).toBe('Success mission, congraturation');
     })
 })
