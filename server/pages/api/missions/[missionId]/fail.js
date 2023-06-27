@@ -1,6 +1,5 @@
 import DynamoItem from '../../../../src/dto/DynamoItem';
 import { TYPES, container } from '../../../../utils/container';
-import { connectDb, queries } from '../../../../utils/database';
 
 
 export default async function handler(req, res){
