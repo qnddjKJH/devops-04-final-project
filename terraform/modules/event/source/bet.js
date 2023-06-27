@@ -7,19 +7,17 @@ module.exports.handler = async (event) => {
 
   const missionId = event.detail.missionid
 
-  const mission = {
-    mission_id: missionId,
+  const data = {
     user_id : event.detail.userid,
     amount : event.detail.amount,
   }
 
-  console.log(mission)
+  console.log(data)
 
   try {
-    await axios.post(`http://wngud9646.click/api/missions/${missionId}/bet`,mission)
     await axios.put(`http://wngud9646.click/api/missions/${missionId}/bet`,mission)
-      console.log(data);
-    }catch(error) {
-      console.log(error);
+  }catch(error) {
+    console.error(error.stack);
+    throw new Error(`axios fail 'PUT /api/missions/${missionId}/bet'`);
   };
 }

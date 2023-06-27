@@ -88,6 +88,25 @@ class MissionService {
     }
   }
 
+  async failOnMission(mission_id, items) {
+    try {
+      const mission = await this._missionRepository.getMissionById(mission_id);
+
+      mission.setDeactive();
+      this._missionRepository.updateMission(mission)
+
+      for (const item of items) {
+        const user = await this._userRepository.getUserById(item.userId);
+        user.increaseCash(item.amount);
+  
+        await this._userRepository.updateUser(user);
+      }
+    } catch (error) {
+      console.error(error.stack);
+      throw new Error('Failed to fail on mission');
+    }
+  }
+
   async deactiveMission(mission_id) {
     try {
       const mission = await this._missionRepository.getMissionById(mission_id);
