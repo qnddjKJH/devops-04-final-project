@@ -1,0 +1,19 @@
+replicas: 1
+
+service:
+  type: LoadBalancer #Local환경 이라면, NodePort로 설정한다.
+
+persistence:
+  type: pvc
+  enabled: true
+  # storageClassName: default
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  # annotations: {}
+  finalizers:
+    - kubernetes.io/pvc-protection
+
+# Administrator credentials when not using an existing secret (see below)
+adminUser: admin
+adminPassword: test1234

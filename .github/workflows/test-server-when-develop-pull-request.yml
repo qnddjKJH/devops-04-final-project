@@ -1,0 +1,49 @@
+name: Test server package when develop pull request
+run-name: ${{ github.actor }} is testing out server package 🚀
+# 2023.06.17 [@ibocok0] https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-including-branches
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+jobs:
+  npm_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - uses: actions/checkout@v3
+
+      # - name: Set .env for configuration
+      #   run: |
+      #     touch ./.env
+      #     echo "TEST_MYSQL_HOST=$TEST_MYSQL_HOST" >> ./.env
+      #     echo "TEST_MYSQL_DATABASE=$TEST_MYSQL_DATABASE" >> ./.env
+      #     echo "TEST_MYSQL_ROOT=$TEST_MYSQL_ROOT" >> ./.env
+      #     echo "TEST_MYSQL_ROOT_PASSWORD=$TEST_MYSQL_ROOT_PASSWORD" >> ./.env 
+      #   env:
+      #     TEST_MYSQL_HOST: ${{ secrets.TEST_MYSQL_HOST }}
+      #     TEST_MYSQL_DATABASE: ${{ secrets.TEST_MYSQL_DATABASE }}
+      #     TEST_MYSQL_ROOT: ${{ secrets.TEST_MYSQL_ROOT }}
+      #     TEST_MYSQL_ROOT_PASSWORD: ${{ secrets.TEST_MYSQL_ROOT_PASSWORD }}
+      - name: check .env
+        run: cat ./.env
+      - name: Start MySQL container
+        run: docker compose --env-file ./.env up -d
+
+      - name: start test
+        run: npm install
+
+      - run: npm ci
+
+      - run: npm test
+
+      - name: test end & container close
+        run: docker compose down
+
+      - uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: server/coverage/**/*.xml
+
