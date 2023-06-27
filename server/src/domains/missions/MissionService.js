@@ -36,10 +36,17 @@ class MissionService {
     }
   }
 
-  async updateMission(id, mission) {
+  async updateMission(id, update) {
     try {
-      await this._missionRepository.updateMission(id, mission);
+      const mission = await this._missionRepository.getMissionById(id);
+
+      mission.update(update)
+
+      await this._missionRepository.updateMission(mission);
+
+      return mission;
     } catch (error) {
+      console.error(error.stack);
       throw new Error('Failed to update mission');
     }
   }

@@ -62,12 +62,12 @@ class MissionRepository {
 
   async createMission(create) {
     const connection = await this._datasource.createConnection();
-    const { userId, streamerId, mission, missionReward, timeLimit, isActive } = create;
+    const { userId, streamerId, mission, missionReward, timelimit, isActive } = create;
     
     try {
       const [result] = await connection.query(
         `INSERT INTO missions (user_id, streamer_id, mission, mission_reward, timelimit, is_active) VALUES (?, ?, ?, ?, ?, ?)`,
-        [userId, streamerId, mission, missionReward, timeLimit, isActive]
+        [userId, streamerId, mission, missionReward, timelimit, isActive]
       );
       
       return result.insertId;
@@ -81,13 +81,13 @@ class MissionRepository {
 
   async updateMission(update) {
     const connection = await this._datasource.createConnection();
-    const { id, userId, streamerId, mission, missionReward, timeLimit, isActive } = update;
+    const { id, userId, streamerId, mission, missionReward, timelimit, isActive } = update;
 
     try {
 
       const [result] = await connection.query(
         'UPDATE missions SET user_id = ?, streamer_id = ?, mission = ?, mission_reward = ?, timelimit = ?, is_active = ? WHERE id = ?',
-        [userId, streamerId, mission, missionReward, timeLimit, isActive, id]
+        [userId, streamerId, mission, missionReward, timelimit, isActive, id]
       );
       
       if (result.affectedRows === 0) {
