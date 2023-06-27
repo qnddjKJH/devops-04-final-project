@@ -100,7 +100,7 @@ nextjs 채택 이유
 - 추후에 시간이 남을 경우 바로 client 작업이 가능한 점
 
 
-##   아키텍처 다이어그램
+## 아키텍처 다이어그램
 ![alt text](images/diagram.png)
 
 왜 EDA를 채용해서 진행했는가?
