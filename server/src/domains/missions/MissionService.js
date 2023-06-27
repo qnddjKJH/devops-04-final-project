@@ -62,6 +62,8 @@ class MissionService {
 
       await this._userRepository.updateUser(user);
       await this._missionRepository.updateMission(mission);
+
+      return mission
     } catch (error) {
       console.error(error.stack);
       throw new Error('Failed to bet on mission');
