@@ -4,7 +4,7 @@
 <br>
 
 # 💡 아키텍처 다이어그램
-![alt text]<img width="904" alt="스크린샷 2023-06-28 오전 9 41 13" src="https://github.com/SangHyupL/devops-04-Final-Team4/assets/127010049/8a292885-6a78-4b22-93e4-4e3225e8ef9e">
+![alt text](alt="스크린샷 2023-06-28 오전 9 41 13" src="https://github.com/SangHyupL/devops-04-Final-Team4/assets/127010049/8a292885-6a78-4b22-93e4-4e3225e8ef9e")
 
 
 <br>
