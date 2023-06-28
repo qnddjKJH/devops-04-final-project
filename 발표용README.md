@@ -241,6 +241,27 @@ Github action은 원격 환경이기 때문에 해당 환경에서 manifest를 �
 Service account를 가지고 CSI 드라이버 역할을 설정하고 addon으로 추가한다.<br>
 Pending 상태의 Pod들을 다시 확인하면 정상적으로 배포된 것을 확인할 수 있다.
 
+#### Worker Node 와 EKS Cluster 간의 통신 연결 장애
+문제: Worker Node 와 EKS Cluster 간의 네트워크 연결이 되지 않아서 생긴 문제
+원인: EKS 는 VPC 내부 서비스가 아닌 외부 서비스로 VPC 안 private subnet 에 배치 되는 Worker Node 와 통신을 할 수 없음
+해결: private subnet 에 NAT Gateway 를 연결하여 인터넷과 통신할 수 있도록 설정
+
+<br>
+
+
+#### kubectl EKS 사용자 연결
+문제: 클러스터 생성자로부터 받은 kubeconfig 파일을 통해 kubectl 로 EKS 클러스터 접근 시 접근 불가
+원인: EKS 에 등록된 사용자가 아니어서 접근이 불가능한 문제
+해결: eksctl 을 사용하여 사용자를 추가하여 접근할 수 있도록 각 팀원들의 IAM 사용자를 추가하였다.
+
+<br>
+
+
+#### AWS LoadBalancer Controller 권한 문제
+문제: AWS LoadBalancer Controller 를 통해 Ingress 를 프로비저닝 된 ALB 로 만드는데 ALB 가 DNS 를 가지지 못했던 문제
+원인: AWS LoadBalancer Controller 가 사용하는 Service Account 에 권한이 제대로 들어가지 못해서 생성되지 않음
+해결: 잘 못 만들어진 SA 를 지우고 다시 생성하여 권한이 제대로 들어갔는지 확인 후 재생성하여 ALB 가 정상적으로 동작하는 것을 확인하였다.
+
 <br>
 
 ### terraform 인프라 관련 트러블슈팅
@@ -302,4 +323,4 @@ Pending 상태의 Pod들을 다시 확인하면 정상적으로 배포된 것을
 
 1.빌드
 2.packge.json 에러 삭제후 npminstall
-3.버전오류 버전 수정
+3.버전오류 버전 수정 
