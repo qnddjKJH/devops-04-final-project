@@ -100,7 +100,7 @@ nextjs 채택 이유
 - 추후에 시간이 남을 경우 바로 client 작업이 가능한 점
 
 
-##   아키텍처 다이어그램
+## 아키텍처 다이어그램
 ![alt text](images/diagram.png)
 
 왜 EDA를 채용해서 진행했는가?
@@ -109,7 +109,34 @@ nextjs 채택 이유
 이러한 이벤트를 다루는 아키텍처를 생성하는것이 흥미롭다고 생각했다.
 
 EKS를 선택한 이유가 있는가?
-- 
+- 시작은 팀의 개인적인 이유. <br>
+세션에서 쿠버네티스 공부를 해보고 실습을 해보았지만, 부족하다고 생각되었고 이에 대한 경험을 쌓아보기 위해 ECS로 구성할 수도 있었다고 생각했으나, EKS라는 새로운 리소스를 사용해보기로 하였다. <br>
+프로젝트가 끝나고 회고해본다면 분명 kubernete는 필요했다.<br>
+ArgoCD나 모니터링 서비스를 구축하는데 pod가 10개 넘게 들어가는 상황이라, 오케스트레이션이 필요한 환경이라고 판단된다.<br>
+서비스는 pod 한개만을 사용하고 있긴 하지만, 많은 트래픽이 발생하면 스케일링을 통해 처리할 수 있을 것이다. (EKS는 쿠바네티스 제어 플레인 노드의 가용성과 확장성을 자동 으로 관리)
+
+RDS를 사용하는 이유:
+ 보안성, 확장성, 가용성 등 다양한 측면에서 이점을 제공한다.
+ 또한, RDS는 필요에 따라 자동으로 확장이 가능하며, 가용 영역 간의 복제를 통해 고가용성을 제공하기 때문에 사용하게 되었다.
+ 
+DynamoDB를 사용하는 이유:
+ AWS dynamodb는 nosql 서비스이며, 실시간 및 대용량의 데이터 저장과 처리, 자동으로 데이터의 확장성과 가용성을 관리하여 애플리케이션의 부하에 따라 자원을 조정, 서버리스 서비스라서 애플리케이션 개발자는 인프라 운영에 대한 부담을 덜 수 있다라는 점 때문에 채택했다.
+
+EventBridge를 사용하는 이유:
+ 이벤트 중심 아키텍처를 구축하기 위해 사용되는 서비스이다. 이벤트 중심 아키텍처는 시스템의 다양한 구성 요소 간에 발생하는 이벤트에 중점을 둔 방식으로 시스템을 설계하는 접근 방식이다.
+ 느슨한 결합(loose coupling)을 통해 시스템을 구성하므로, 각 구성 요소는 독립적으로 작동하고 확장 가능하며, 이벤트를 통해 상호작용할 수 있다.
+ 다양한 소스에서 발생하는 이벤트를 감지하고, 필요한 대상으로 이벤트를 라우팅할 수 있다.
+
+VPC(Virtual Private Cloud) 엔드포인트를 사용하는 이유:
+ Amazon Web Services(AWS)에서 제공하는 서비스로, VPC 내에서 AWS 서비스에 안전하게 연결하기 위한 기능을 제공하며, VPC 내의 리소스와 AWS 서비스 간의 트래픽이 AWS 네트워크를 통해 전송되지 않고, 직접적으로 전달된다.
+ 퍼블릭 인터넷을 통한 통신을 우회하므로, 인터넷을 통한 외부로의 액세스가 필요하지 않을 때 보안상 이점을 제공한다.
+ AWS 서비스와의 통신이 AWS의 전용 네트워크를 통해 이루어지므로, 인터넷 트래픽 비용을 절감할 수 있다.
+
+SNS를 사용하는 이유:
+ AWS에서 제공하는 관리형 메시지 및 알림 서비스, 다양한 종류의 메시지 전송을 지원하며, 미션 별로 데이터를 전송하거나, 이메일을 보내는 등 다양한 통신 기능을 활용하기 위해 채택했다.
+
+Lambda를 사용하는 이유:
+ AWS에서 제공하는 서버리스 컴퓨팅 서비스로, 이벤트에 응답하여 코드를 실행하는 함수형 서비스이며, 서비스가 필요한 시점에 자동으로 트리거 되도록 설계할 수 있다. 느슨한 결합을 구현하여 애플리케이션의 유연성과 확장성을 향상할 수 있다. 이러한 이유로 채택하였다
 
 Failsafe 관련된 인프라가 부족해 보인다.
 - 부족한 점으로써 꼽을 수 있었는데, 아키텍처 회의때 CTO분께서도 관련된 조언을 해주셨지만, 아키텍처 상에 여러번 수정이 가해지고, 그에 대한 부분을 놓쳤다고 생각된다.<br>
@@ -202,3 +229,62 @@ Github action은 원격 환경이기 때문에 해당 환경에서 manifest를 �
 해결: Oidc-provider를 설정해주고, oidc-provider로 service account를 생성한다.
 Service account를 가지고 CSI 드라이버 역할을 설정하고 addon으로 추가한다.<br>
 Pending 상태의 Pod들을 다시 확인하면 정상적으로 배포된 것을 확인할 수 있다.
+
+
+
+
+### terraform 인프라 관련 트러블슈팅
+### 모듈별로 작성했을 때, 리소스들 못 찾는 문제 
+문제: 서로 다른 모듈 안에 있는 리소스를 module. 형식으로 사용하고 싶었다. 하지만 다른 모듈에 리소스를 찾지 못하는 상태였다.<br>
+원인: 다른 모듈에 있는 값을 알지 못하기 때문에 불러오지 못함<br>
+해결 : 다른 모듈에 있는 리소스를 사용하려면 outputs.tf를 이용하여 사용하려는 모듈에 리소스를 명시하고, 그 리소스를 받을 모듈에 variables.tf에 명시해야 한다. 또한 루트 디렉터리에 있는 main.tf에 variables.tf에 지정한 변수명 = outputs.tf에 있는 변수명 형식으로 사용하겠다는 명시를 해줘야 한다.<br>
+
+### Error: local-exec provisioner error │ │ with module.mission_link_event.module.mission_link_success_lambda.null_resource.archive [0], │ on. terraform/modules/mission_link_event.mission_link_success_lambda/package.tf line 63, in resource "null_resource" "archive": │ 63: provisioner "local-exec" { 
+...
+
+문제: 테라폼에서 기본적으로 제공하는 source인 "terraform-aws-modules/lambda/aws"를 써서 만들 때, lambda에 기반이 되는 code 파일을 찾지 못하는 문제가 있었다.<br>
+원인: terraform apply를 해서 처음 zip 파일을 만들었을 때, 이것을 인식하지 못했다.<br>
+해결: 다시 terraform apply를 하면 무사히 zip 파일을 찾아서 lambda를 만들 수 있다.<br>
+
+### lambda에서 eventbridge,dynamodb 데이터 받을 시 문제점
+문제: lambda에서 dynamodb, eventbridge의 데이터를 받은 과정에서 access denied라는 오류가 나왔다<br>
+원인: lambda의 실행 역할에 dynamodb, eventbridge 관련 정책을 연결해 주지 않아서 데이터를 받아올 수 없었다.<br>
+해결: "aws_iam_role_policy"에 dynamodb, eventbridge 두 개에 데이터에 접근할 수 있는 정책을 추가해서 lambda의 실행 역할에 연결해 주었다.<br>
+
+
+
+
+### 기능 관련 트러블슈팅
+### "require is not defined in ES module scope, you can use import instead\nThis file is being treated as an ES module because it has a '. js' file extension and '/var/task/package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '. cjs' file extension.",
+...
+
+문제: 자바스크립트로 코드를 구성하는데 require을 통해 모듈을 불러오는 부분에서 오류가 났다.<pr>
+원인: ES 모듈을 사용하는데 모듈에 require가 정의되지 않았다.<pr>
+해결: JavaScript에서 모듈 시스템을 구현할 때, CommonJS와 ES 모듈 두 가지 방식을 쓰는데, package.json에 type: module로 정의해서 import문을 써야 했다. type: module로 정의된 것을 지워서 require문을 쓸 수 있도록 해결했다.<br>
+
+### [Object: null prototype] {'{"Items":[{"action":"missionCreate","user_id":2,"mission_id":1,"amount":3000,"streamer_id":1,"id":"2"}],"Count":1 "ScannedCount":2}': ''}
+...
+
+문제: 서버가 lambda가 보낸 데이터 형식에서 데이터를 읽지 못하는 것이다.
+원인: lambda에서 axios를 보낼 때, JSON.stringify를 써서 데이터를 보내는데, json 형식으로 데이터가 간다. 하지만 이 데이터를 받으려면, 서버 측에서 객체로 변환해야지 이 데이터를 읽을수 있다.
+해결: lambda에서 데이터를 보낼 때 객체 형태로 보내도록 구성해서 서버에서 데이터를 읽을 수 있도록 하였다.
+
+### jest encountered an unexpected token
+에러는 Jest 테스트 실행 중에 JavaScript 파일에 의도하지 않은 토큰이 포함되어 있을 때 발생. 
+이러한 토큰은 주로 잘못된 구문 또는 모듈 로드 오류로 인해 발생할 수 있다고 생각해. 
+이 문제를 해결하기 위해서 디버깅
+1차 Babel 구성 확인
+2차 Jest.config.js 파일확인
+3차 문법 오류 확인 javScript 구문과 일치하지않는 문법이있는지 확인결과 문법오류가있는것을 확인하고 수정
+
+### Error retrieving secrets: secretName is not defined 
+"secretName 을 aws상에서 찾을수없다고 생각했는데  코드상에 "secretName" 을 선언하지 않아서 오류가 발생
+1."secretName 선언
+
+### Could not find a production build in the
+빌드를 하지않아서 발생한 문제 빌드를 하였지만 또다시 에러가 발생 package.json에 에러가있어 삭제하고
+다시 "npminstall을 통해 다시 설치하였지만 버전이 맞지않아 버전변경
+
+1.빌드
+2.packge.json 에러 삭제후 npminstall
+3.버전오류 버전 수정

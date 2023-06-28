@@ -36,10 +36,17 @@ class MissionService {
     }
   }
 
-  async updateMission(id, mission) {
+  async updateMission(id, update) {
     try {
-      await this._missionRepository.updateMission(id, mission);
+      const mission = await this._missionRepository.getMissionById(id);
+
+      mission.update(update)
+
+      await this._missionRepository.updateMission(mission);
+
+      return mission;
     } catch (error) {
+      console.error(error.stack);
       throw new Error('Failed to update mission');
     }
   }
@@ -62,6 +69,8 @@ class MissionService {
 
       await this._userRepository.updateUser(user);
       await this._missionRepository.updateMission(mission);
+
+      return mission
     } catch (error) {
       console.error(error.stack);
       throw new Error('Failed to bet on mission');
@@ -83,6 +92,25 @@ class MissionService {
     } catch (error) {
       console.error(error.stack);
       throw new Error('Failed to seccess on mission');
+    }
+  }
+
+  async failOnMission(mission_id, items) {
+    try {
+      const mission = await this._missionRepository.getMissionById(mission_id);
+
+      mission.setDeactive();
+      this._missionRepository.updateMission(mission)
+
+      for (const item of items) {
+        const user = await this._userRepository.getUserById(item.userId);
+        user.increaseCash(item.amount);
+  
+        await this._userRepository.updateUser(user);
+      }
+    } catch (error) {
+      console.error(error.stack);
+      throw new Error('Failed to fail on mission');
     }
   }
 

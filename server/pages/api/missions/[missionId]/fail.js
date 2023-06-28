@@ -1,41 +1,43 @@
-import { connectDb, queries } from '../../../../utils/database';
+import DynamoItem from '../../../../src/dto/DynamoItem';
+import { TYPES, container } from '../../../../utils/container';
+
 
 export default async function handler(req, res){
+  const METHOD = req.method;
 
-  const missionId  = req.query.missionId
+  switch(METHOD) {
+    case 'PUT':
+      await handlePut(req, res);
+      break;
+  }
+}
 
-  const conn = await connectDb();
-  
-  if(req.method === 'PUT'){   
-      const items = req.body;
+export const handlePut = async (req, res) => {
+  const { missionId } = req.query;
 
-      console.log(items)
+  const items = req.body.map(itemData => {
+    return new DynamoItem(
+      itemData.id,
+      itemData.action,
+      itemData.amount,
+      itemData.mission_id,
+      itemData.user_id
+    )
+  })
 
-      for (let i = 0; i < items.length; i++) {
-        let user_id = items[i].user_id;
-        console.log(user_id)
-        let amount = items[i].amount;
-        
-        let [user] = await conn.query(queries.getUserByid(user_id));
-        console.log(user);
-      
-        if (user.length > 0) {
-          let cash = user[0].cash;
-          console.log(cash);
-      
-          if (isNaN(amount)) {
-            amount = 0; // 유효하지 않은 값이면 0으로 설정
-          }
-      
-          await conn.query(queries.increaseUserCash(user_id, amount))
+  try {
+    const missionService = container.get(TYPES.MissionService);
+    
+    await missionService.failOnMission(missionId, items);
 
-          await conn.query(queries.deactivateMission(missionId));
-        
-        }
-      }
-      await conn.end();
-      res.status(200).json({ message : `스트리머 실패!!, 시청자에게 금액 정산 완료`});
-  } else {
-    res.status(400).json({ message: 'Invalid request method' });
+    const data = {
+      message: 'fail mission process success',
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error(error.stack);
+    const errorMessage = 'error fail on mission';
+    return res.status(500).json({ error: errorMessage });
   }
 }

@@ -1,41 +1,100 @@
-import { connectDb, queries } from '../../../../utils/database';
+import { TYPES, container } from '../../../../utils/container';
 import { verifyToken } from '../../../../utils/jwt';
 
-const { getSecrets } = require('../../../../utils/secret');
-const secretName = 'finaldb';
-
 export default async function handler(req, res) {
+  const METHOD = req.method;
 
-  const missionId = req.query.missionId
+  const secretsManager = container.get(TYPES.SecretsManager)
 
-  const conn = await connectDb();
-  const secrets = await getSecrets(secretName);
+  const secrets = await secretsManager.getJwtSecret();
 
   const token = req.headers.authorization?.split(' ')[1];
   const jwt_secrets = secrets.JWT_SECRET;
   const decoded = verifyToken(token, jwt_secrets);
 
   if (decoded) {
-    if (req.method === 'GET') {
-      const [result] = await conn.query(queries.getMissionById(missionId));
-      await conn.end();
-
-      res.status(200).json(result);
-    } else if (req.method === 'PUT') {
-      const { mission } = req.body;
-
-      await conn.query(queries.putMission(missionId, mission));
-      const [result] = await conn.query(queries.getMissionById(missionId));
-      await conn.end();
-
-      res.status(200).json(result[0]);
-    } else if (req.method === 'DELETE') {
-      await conn.query(queries.deactivateMission(missionId));
-      await conn.end();
-
-      res.status(200).json({ message: 'Mission Deactivated' });
+    switch(METHOD) {
+      case 'GET':
+        await handleGet(req, res);
+        break;
+      case 'PUT':
+        await handlePut(req, res);
+        break;
+      case 'DELETE':
+        await handleDelete(req, res);
+        break;
     }
-  } else {
-    res.status(401).json({ message: 'Unauthorized' });
+  }
+}
+
+export const handleGet = async (req, res) => {
+  const { missionId } = req.query;
+
+  try {
+    const missionService = container.get(TYPES.MissionService);
+
+    const mission = await missionService.getMissionById(missionId);
+
+    const data = {
+      message: 'Successful get mission',
+      data: mission
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error(error.stack);
+    const errorMessage = 'error API: get mission';
+    return res.status(500).json({ error: errorMessage });
+  }
+}
+
+export const handlePut = async (req, res) => {
+  const { missionId } = req.query;
+
+  const {
+    mission, 
+    timelimit,
+  } = req.body
+
+  try {
+    const missionService = container.get(TYPES.MissionService);
+
+    const update = {
+      mission,
+      timelimit
+    }
+
+    const updated = await missionService.updateMission(missionId, update);
+
+    const data = {
+      message: 'Successful update mission',
+      data: updated
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error(error.stack);
+    const errorMessage = 'error API: update mission';
+    return res.status(500).json({ error: errorMessage });
+  }
+}
+
+export const handleDelete = async (req, res) => {
+  const { missionId } = req.query;
+
+  try {
+    const missionService = container.get(TYPES.MissionService);
+
+    await missionService.deactiveMission(missionId);
+
+    const data = {
+      message: 'Successful deactivate Mission',
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error(error.stack);
+    const errorMessage = 'error API: deactive mission';
+    return res.status(500).json({ error: errorMessage });
   }
 }
