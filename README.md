@@ -4,7 +4,8 @@
 <br>
 
 # 💡 아키텍처 다이어그램
-![alt text](images/image.png)
+![alt text]![image](https://github.com/SangHyupL/devops-04-Final-Team4/assets/127010049/e1dacc09-9fac-4fe2-bc75-628e3093badc)
+
 
 
 <br>
