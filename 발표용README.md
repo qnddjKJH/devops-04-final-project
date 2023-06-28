@@ -269,4 +269,22 @@ Pending 상태의 Pod들을 다시 확인하면 정상적으로 배포된 것을
 원인: lambda에서 axios를 보낼 때, JSON.stringify를 써서 데이터를 보내는데, json 형식으로 데이터가 간다. 하지만 이 데이터를 받으려면, 서버 측에서 객체로 변환해야지 이 데이터를 읽을수 있다.
 해결: lambda에서 데이터를 보낼 때 객체 형태로 보내도록 구성해서 서버에서 데이터를 읽을 수 있도록 하였다.
 
+### jest encountered an unexpected token
+에러는 Jest 테스트 실행 중에 JavaScript 파일에 의도하지 않은 토큰이 포함되어 있을 때 발생. 
+이러한 토큰은 주로 잘못된 구문 또는 모듈 로드 오류로 인해 발생할 수 있다고 생각해. 
+이 문제를 해결하기 위해서 디버깅
+1차 Babel 구성 확인
+2차 Jest.config.js 파일확인
+3차 문법 오류 확인 javScript 구문과 일치하지않는 문법이있는지 확인결과 문법오류가있는것을 확인하고 수정
 
+### Error retrieving secrets: secretName is not defined 
+"secretName 을 aws상에서 찾을수없다고 생각했는데  코드상에 "secretName" 을 선언하지 않아서 오류가 발생
+1."secretName 선언
+
+### Could not find a production build in the
+빌드를 하지않아서 발생한 문제 빌드를 하였지만 또다시 에러가 발생 package.json에 에러가있어 삭제하고
+다시 "npminstall을 통해 다시 설치하였지만 버전이 맞지않아 버전변경
+
+1.빌드
+2.packge.json 에러 삭제후 npminstall
+3.버전오류 버전 수정
