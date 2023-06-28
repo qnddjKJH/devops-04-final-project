@@ -1,5 +1,12 @@
 # Project: Mission Link
-JavaScript + Node.js + Nextjs 미션 관리 서비스 <br>
+### JavaScript + Node.js + Nextjs 미션 관리 서비스 
+
+<br>
+
+# 💡 아키텍처 다이어그램
+![alt text](images/image.png)
+
+<br>
 
 # 💻 프로젝트 소개
 트윕(트위치 미션관리 시스템)에서 영감을 받아, 스트리머에게 미션을 걸고, 미션 성공 실패에 따른 보상을 지급하는 서비스
@@ -33,38 +40,6 @@ CI/CD 파이프라인: <img src="https://img.shields.io/badge/githubactions-2088
 
 <br>
 
-## 📔 스택 선정 이유
-language - javascript<br>
-팀원들의 코딩 수준이 비슷한 자바스크립트 채택
-
-Framework - Next.js<br>
-- 서버 프레임워크는 fastify 와 express 둘 중 고민
-- 사용 경험 자체가 fastify 와 express 말고는 없는 점
-
-fastify <br>
-- fastify 는 express 에 비해 커뮤니티가 활성화 되지 않아 정보가 부족함
-- 사용률이 낮아 정보가 매우 적은 편
-- 성능이 가장 좋음
-
-express
-- express 는 커뮤니티가 많이 활성화 되어 정보가 많다 *중요
-- 진입장벽이 낮다
-
-nextjs - 채택
-- 현재 점유율이 가장 좋은 프레임워크중 하나로 express 와 마찬가지로 커뮤니티가 많이 활성화 되어 정보가 많다 *중요
-- 러닝커브 높음, 진입장벽이 조금 있다, 리액트의 개념도 포함되어 있기 때문
-- 프론트엔드 작업도 같이 할 수 있다
-
-IaC와 CI/CD, 모니터링 기술 스택은 대중적인 스택이라 이번 프로젝트에서 사용하였다.
-
-<br>
-
-# 💡 아키텍처 다이어그램
-![alt text](images/diagram.png)
-
-<br>
-
-
 # 📌 인프라 특징
 - 해당 서비스는 EKS 쿠버네티스 클러스터에 구성되어 있다
 - WAS는 EKS 워커 노드로써 구현되어 있다
@@ -94,6 +69,35 @@ IaC와 CI/CD, 모니터링 기술 스택은 대중적인 스택이라 이번 프
 - 다른 유저들은 생성된 미션에 대해 금액을 추가할 수 있다
 - 스트리머가 미션을 성공할 경우, 미션금액이 스트리머에게 지급된다
 - 스트리머가 미션을 실패할 경우, 미션에 금액을 건 유저들에게 환급된다
+
+<br>
+
+## 📔 스택 선정 이유
+language - javascript<br>
+팀원들의 코딩 수준이 비슷한 자바스크립트 채택
+
+Framework - Next.js<br>
+- 서버 프레임워크는 fastify 와 express 둘 중 고민
+- 사용 경험 자체가 fastify 와 express 말고는 없는 점
+
+fastify <br>
+- fastify 는 express 에 비해 커뮤니티가 활성화 되지 않아 정보가 부족함
+- 사용률이 낮아 정보가 매우 적은 편
+- 성능이 가장 좋음
+
+express
+- express 는 커뮤니티가 많이 활성화 되어 정보가 많다 *중요
+- 진입장벽이 낮다
+
+nextjs - 채택
+- 현재 점유율이 가장 좋은 프레임워크중 하나로 express 와 마찬가지로 커뮤니티가 많이 활성화 되어 정보가 많다 *중요
+- 러닝커브 높음, 진입장벽이 조금 있다, 리액트의 개념도 포함되어 있기 때문
+- 프론트엔드 작업도 같이 할 수 있다
+
+IaC와 CI/CD, 모니터링 기술 스택은 대중적인 스택이라 이번 프로젝트에서 사용하였다.
+
+
+
 
 
 
