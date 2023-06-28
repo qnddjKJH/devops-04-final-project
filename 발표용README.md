@@ -38,6 +38,7 @@ last_modified_at: 2023-06-25
 - 미션 데이터를 기반으로 미션 성공에 대해 처리하는 시스템은 데이터 유실을 막기 위해 느슨하게 결합되어야한다.
 - 시스템 메트릭 또는 저장된 데이터에 대한 하나 이상의 시각화된 모니터링 시스템이 구축되어야한다.
 
+<br>
 
 ### 유저 시나리오
 [role] 미션 만든사람 <br>
@@ -60,11 +61,14 @@ last_modified_at: 2023-06-25
 - 포인트 교환
 - 어느 사용자가 해당 미션에 대해 얼마를 걸었고, 그 포인트가 성공 여부에 따라 자동 지급되어야 함
 
+<br>
 
 ### ERD 작성
 ![alt text](images/dbdiagram.png)
 
 처음에는 미션의 베팅 정보를 가진 하나의 Table을 관리하려고 하였지만, EDA를 적용시키기 위해, Event_log라는 독자적인 DB Table을 설계하였다.
+
+<br>
 
 ### Server 기술스택 설정
 language - javascript
@@ -99,9 +103,10 @@ nextjs 채택 이유
 - 미들웨어 == express
 - 추후에 시간이 남을 경우 바로 client 작업이 가능한 점
 
+<br>
 
 ## 아키텍처 다이어그램
-![alt text](images/diagram.png)
+![alt text](images/image.png)
 
 왜 EDA를 채용해서 진행했는가?
 - 기존에 구상하던 아키텍처로는 미션에 유저들이 금액을 얼마나 넣는지에 대한 정보를 가진 테이블을 구상하고 있었다. <br>
@@ -116,31 +121,33 @@ ArgoCD나 모니터링 서비스를 구축하는데 pod가 10개 넘게 들어�
 서비스는 pod 한개만을 사용하고 있긴 하지만, 많은 트래픽이 발생하면 스케일링을 통해 처리할 수 있을 것이다. (EKS는 쿠바네티스 제어 플레인 노드의 가용성과 확장성을 자동 으로 관리)
 
 RDS를 사용하는 이유:
- 보안성, 확장성, 가용성 등 다양한 측면에서 이점을 제공한다.
- 또한, RDS는 필요에 따라 자동으로 확장이 가능하며, 가용 영역 간의 복제를 통해 고가용성을 제공하기 때문에 사용하게 되었다.
+- 보안성, 확장성, 가용성 등 다양한 측면에서 이점을 제공한다. <br>
+또한, RDS는 필요에 따라 자동으로 확장이 가능하며, 가용 영역 간의 복제를 통해 고가용성을 제공하기 때문에 사용하게 되었다.
  
 DynamoDB를 사용하는 이유:
- AWS dynamodb는 nosql 서비스이며, 실시간 및 대용량의 데이터 저장과 처리, 자동으로 데이터의 확장성과 가용성을 관리하여 애플리케이션의 부하에 따라 자원을 조정, 서버리스 서비스라서 애플리케이션 개발자는 인프라 운영에 대한 부담을 덜 수 있다라는 점 때문에 채택했다.
+- AWS dynamodb는 nosql 서비스이며, 실시간 및 대용량의 데이터 저장과 처리, 자동으로 데이터의 확장성과 가용성을 관리하여 애플리케이션의 부하에 따라 자원을 조정, 서버리스 서비스라서 애플리케이션 개발자는 인프라 운영에 대한 부담을 덜 수 있다라는 점 때문에 채택했다.
 
 EventBridge를 사용하는 이유:
- 이벤트 중심 아키텍처를 구축하기 위해 사용되는 서비스이다. 이벤트 중심 아키텍처는 시스템의 다양한 구성 요소 간에 발생하는 이벤트에 중점을 둔 방식으로 시스템을 설계하는 접근 방식이다.
- 느슨한 결합(loose coupling)을 통해 시스템을 구성하므로, 각 구성 요소는 독립적으로 작동하고 확장 가능하며, 이벤트를 통해 상호작용할 수 있다.
- 다양한 소스에서 발생하는 이벤트를 감지하고, 필요한 대상으로 이벤트를 라우팅할 수 있다.
+- 이벤트 중심 아키텍처를 구축하기 위해 사용되는 서비스이다. 이벤트 중심 아키텍처는 시스템의 다양한 구성 요소 간에 발생하는 이벤트에 중점을 둔 방식으로 시스템을 설계하는 접근 방식이다.
+- 느슨한 결합(loose coupling)을 통해 시스템을 구성하므로, 각 구성 요소는 독립적으로 작동하고 확장 가능하며, 이벤트를 통해 상호작용할 수 있다.
+- 다양한 소스에서 발생하는 이벤트를 감지하고, 필요한 대상으로 이벤트를 라우팅할 수 있다.
 
 VPC(Virtual Private Cloud) 엔드포인트를 사용하는 이유:
- Amazon Web Services(AWS)에서 제공하는 서비스로, VPC 내에서 AWS 서비스에 안전하게 연결하기 위한 기능을 제공하며, VPC 내의 리소스와 AWS 서비스 간의 트래픽이 AWS 네트워크를 통해 전송되지 않고, 직접적으로 전달된다.
- 퍼블릭 인터넷을 통한 통신을 우회하므로, 인터넷을 통한 외부로의 액세스가 필요하지 않을 때 보안상 이점을 제공한다.
- AWS 서비스와의 통신이 AWS의 전용 네트워크를 통해 이루어지므로, 인터넷 트래픽 비용을 절감할 수 있다.
+- Amazon Web Services(AWS)에서 제공하는 서비스로, VPC 내에서 AWS 서비스에 안전하게 연결하기 위한 기능을 제공하며, VPC 내의 리소스와 AWS 서비스 간의 트래픽이 AWS 네트워크를 통해 전송되지 않고, 직접적으로 전달된다.
+- 퍼블릭 인터넷을 통한 통신을 우회하므로, 인터넷을 통한 외부로의 액세스가 필요하지 않을 때 보안상 이점을 제공한다.
+- AWS 서비스와의 통신이 AWS의 전용 네트워크를 통해 이루어지므로, 인터넷 트래픽 비용을 절감할 수 있다.
 
 SNS를 사용하는 이유:
- AWS에서 제공하는 관리형 메시지 및 알림 서비스, 다양한 종류의 메시지 전송을 지원하며, 미션 별로 데이터를 전송하거나, 이메일을 보내는 등 다양한 통신 기능을 활용하기 위해 채택했다.
+- AWS에서 제공하는 관리형 메시지 및 알림 서비스, 다양한 종류의 메시지 전송을 지원하며, 미션 별로 데이터를 전송하거나, 이메일을 보내는 등 다양한 통신 기능을 활용하기 위해 채택했다.
 
 Lambda를 사용하는 이유:
- AWS에서 제공하는 서버리스 컴퓨팅 서비스로, 이벤트에 응답하여 코드를 실행하는 함수형 서비스이며, 서비스가 필요한 시점에 자동으로 트리거 되도록 설계할 수 있다. 느슨한 결합을 구현하여 애플리케이션의 유연성과 확장성을 향상할 수 있다. 이러한 이유로 채택하였다
+- AWS에서 제공하는 서버리스 컴퓨팅 서비스로, 이벤트에 응답하여 코드를 실행하는 함수형 서비스이며, 서비스가 필요한 시점에 자동으로 트리거 되도록 설계할 수 있다. 느슨한 결합을 구현하여 애플리케이션의 유연성과 확장성을 향상할 수 있다. 이러한 이유로 채택하였다
 
 Failsafe 관련된 인프라가 부족해 보인다.
 - 부족한 점으로써 꼽을 수 있었는데, 아키텍처 회의때 CTO분께서도 관련된 조언을 해주셨지만, 아키텍처 상에 여러번 수정이 가해지고, 그에 대한 부분을 놓쳤다고 생각된다.<br>
-내결함성이나 보안성을 고려해서 lambda에서 WAS로 들어오는 요청 사이에 SQS와 DLQ를 배치해서 FailSafe를 고려해 볼 수 있었다고 판단된다.<br>
+내결함성이나 보안성을 고려해서 lambda에서 WAS로 들어오는 요청 사이에 SQS와 DLQ를 배치해서 FailSafe를 고려해 볼 수 있었다고 판단된다.
+
+<br>
 
 ### 아키텍처 시나리오
 - 유저는 로그인 엔트포인트에서 로그인 후, 토큰 발급 받음
@@ -149,6 +156,7 @@ Failsafe 관련된 인프라가 부족해 보인다.
 - missions/[missionId]/event에서 특정 이벤트 발생시, 이벤트에 관련된 작업들을 실행할 수 있다.(Eventbridge에 event 발생, Dynamodb에 이벤트 로그 작성)
 - missions/[missionId]/fail, success, bet에서 이벤트 발생시 트리거된 람다에서 들어오는 요청에 대해 실질적인 RDS 작업을 한다.(bet의 경우 유저의 cash를 차감, mission reward에 금액 추가, fail, success의 경우, success는 해당 스트리머에게 reward를 지급, fail의 경우 cash를 환급)
 
+<br>
 
 ## 트러블 슈팅
 ## CI/CD
@@ -170,6 +178,7 @@ Dockerfile을 찾지 못함<br>
 원인: build하기 위한 파일이 부족. npm run build를 하기 전에 Copy . . 으로 작업 디렉토리로 파일들을 복사해가야하는데 해당 작업 전에 npm run build가 실행됨. 빌드할 리소스들이 없으니 에러가 발생.<br>
 해결: Dockerfile의 명령 순서를 변경하였다.
 
+<br>
 
 #### github action 트리거 push에서 pull request로 변경했을때 문제
 내 로컬 상에서는 작동이 되었지만, upstream 레포지토리에 PR를 생성하였을 때는 에러가 발생했다.
@@ -187,6 +196,7 @@ github action 트리거가 pull request일 시에, 안전을 위해 action에서
 해당 트리거로 추구했던것은 PR이 merge되면 WAS 관련 디렉토리가 변경될 시에 CI/CD가 트리거되는 것이였다.<br>
 PR이 Merge될때의 트리거를 여러 방면으로 찾다가, github discussion에서 on: push하고 paths를 설정하면 된다는 글을 확인하였다.
 
+<br>
 
 #### kustomize
 EKS manifest 파일의 변경사항을 적용하여 새로 빌드해주는 kustomize를 적용시켰다.
@@ -195,7 +205,7 @@ EKS manifest 파일의 변경사항을 적용하여 새로 빌드해주는 kusto
 원인: kubectl에 내장된 kustomize로 작동시에 kustomization.yaml을 제대로 파악하지 못하는 에러 발생 <br>
 해결: kustomize를 따로 설치해서 사용하니 정상적으로 작동
 
-
+<br>
 
 #### Github action을 이용한 EKS 배포
 최초에는 해당 방식으로 EKS CD를 진행했다.<br>
@@ -207,13 +217,13 @@ Github action은 원격 환경이기 때문에 해당 환경에서 manifest를 �
 
 선택한 해결 방법은 manifest 변경점을 action에서 다른 레포지토리로 push하는 방법을 사용하였다.
 
+<br>
 
 #### 다른 레포지토리 Push 시에 문제점
 문제점: Push에 access denied 오류가 발생 원인: github access token으로 인증을 해야하는데, 토큰 정보가 없음 <br>
 해결: Github secrete에 access token을 넣어주고 이를 확인한 후 Push.
 
-
-
+<br>
 
 ### EKS 관련 트러블슈팅
 #### 0/1 nodes are available: 1 Too many pods. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.. <br>
@@ -222,6 +232,7 @@ Github action은 원격 환경이기 때문에 해당 환경에서 manifest를 �
 하지만 17개 이상으로 pod가 배치되려고 해서 생긴 오류 <br>
 해결: Worker node Group에 최대 노드 개수를 2개로 늘린다. scaling 되면서 pod들이 분산된다.
 
+<br>
 
 #### waiting for a volume to be created, either by external provisioner “ebs.csi.aws.com” or manually created by system administrator
 문제: Persistent volume들이 필요한 pod들이 볼륨을 생성하지 못하고 pending 되는 상태<br>
@@ -230,14 +241,15 @@ Github action은 원격 환경이기 때문에 해당 환경에서 manifest를 �
 Service account를 가지고 CSI 드라이버 역할을 설정하고 addon으로 추가한다.<br>
 Pending 상태의 Pod들을 다시 확인하면 정상적으로 배포된 것을 확인할 수 있다.
 
-
-
+<br>
 
 ### terraform 인프라 관련 트러블슈팅
 ### 모듈별로 작성했을 때, 리소스들 못 찾는 문제 
 문제: 서로 다른 모듈 안에 있는 리소스를 module. 형식으로 사용하고 싶었다. 하지만 다른 모듈에 리소스를 찾지 못하는 상태였다.<br>
 원인: 다른 모듈에 있는 값을 알지 못하기 때문에 불러오지 못함<br>
 해결 : 다른 모듈에 있는 리소스를 사용하려면 outputs.tf를 이용하여 사용하려는 모듈에 리소스를 명시하고, 그 리소스를 받을 모듈에 variables.tf에 명시해야 한다. 또한 루트 디렉터리에 있는 main.tf에 variables.tf에 지정한 변수명 = outputs.tf에 있는 변수명 형식으로 사용하겠다는 명시를 해줘야 한다.<br>
+
+<br>
 
 ### Error: local-exec provisioner error │ │ with module.mission_link_event.module.mission_link_success_lambda.null_resource.archive [0], │ on. terraform/modules/mission_link_event.mission_link_success_lambda/package.tf line 63, in resource "null_resource" "archive": │ 63: provisioner "local-exec" { 
 ...
@@ -246,13 +258,14 @@ Pending 상태의 Pod들을 다시 확인하면 정상적으로 배포된 것을
 원인: terraform apply를 해서 처음 zip 파일을 만들었을 때, 이것을 인식하지 못했다.<br>
 해결: 다시 terraform apply를 하면 무사히 zip 파일을 찾아서 lambda를 만들 수 있다.<br>
 
+<br>
+
 ### lambda에서 eventbridge,dynamodb 데이터 받을 시 문제점
 문제: lambda에서 dynamodb, eventbridge의 데이터를 받은 과정에서 access denied라는 오류가 나왔다<br>
 원인: lambda의 실행 역할에 dynamodb, eventbridge 관련 정책을 연결해 주지 않아서 데이터를 받아올 수 없었다.<br>
 해결: "aws_iam_role_policy"에 dynamodb, eventbridge 두 개에 데이터에 접근할 수 있는 정책을 추가해서 lambda의 실행 역할에 연결해 주었다.<br>
 
-
-
+<br>
 
 ### 기능 관련 트러블슈팅
 ### "require is not defined in ES module scope, you can use import instead\nThis file is being treated as an ES module because it has a '. js' file extension and '/var/task/package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '. cjs' file extension.",
@@ -261,6 +274,8 @@ Pending 상태의 Pod들을 다시 확인하면 정상적으로 배포된 것을
 문제: 자바스크립트로 코드를 구성하는데 require을 통해 모듈을 불러오는 부분에서 오류가 났다.<pr>
 원인: ES 모듈을 사용하는데 모듈에 require가 정의되지 않았다.<pr>
 해결: JavaScript에서 모듈 시스템을 구현할 때, CommonJS와 ES 모듈 두 가지 방식을 쓰는데, package.json에 type: module로 정의해서 import문을 써야 했다. type: module로 정의된 것을 지워서 require문을 쓸 수 있도록 해결했다.<br>
+
+<br>
 
 ### [Object: null prototype] {'{"Items":[{"action":"missionCreate","user_id":2,"mission_id":1,"amount":3000,"streamer_id":1,"id":"2"}],"Count":1 "ScannedCount":2}': ''}
 ...
