@@ -62,4 +62,12 @@ jobs:
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      run: | 
+        terraform apply -auto-approve -input=false
+        terraform state pull > terraform.tfstate
+        
+    - name: Upload Terraform state file
+      uses: actions/upload-artifact@v2
+      with:
+        name: terraform-state
+        path: terraform.tfstate
