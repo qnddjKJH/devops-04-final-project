@@ -24,6 +24,7 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: ./server
 
     steps:
     # Checkout the repository to the GitHub Actions runner
