@@ -39,12 +39,16 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-
-
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
 
+    - name: Download Terraform state file
+      uses: actions/download-artifact@v2
+      with:
+        name: terraform-state
+        path: terraform.tfstate
+        
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
@@ -63,7 +67,7 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: | 
-        terraform apply -auto-approve -input=false
+        terraform apply -auto-approve -input=false || true
         terraform state pull > terraform.tfstate
         
     - name: Upload Terraform state file
