@@ -43,19 +43,6 @@ jobs:
     - name: Terraform Init
       run: terraform init
 
-    - name: Upload Terraform state file
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-state
-        path: terraform.tfstate
-
-        
-    - name: Download Terraform state file
-      uses: actions/download-artifact@v2
-      with:
-        name: terraform-state
-        path: terraform.tfstate
-
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
@@ -77,8 +64,5 @@ jobs:
         terraform apply -auto-approve -input=false || true
         terraform state pull > terraform.tfstate
         
-    - name: Upload Terraform state file
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-state
-        path: terraform.tfstate
+    - name: upload Terraform state file
+      run: aws s3 cp terraform.tfstate s3://final-terraform/
