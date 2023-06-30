@@ -1,0 +1,73 @@
+# terraform.yaml
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+    - "main"
+    paths:
+    - 'terraform/**'
+
+env:
+  AWS_REGION: ap-northeast-2   # set this to your preferred AWS region, e.g. us-west-1
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # AWS 리소스를 이용하기 위해서 추가
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: download Terraform state file
+      run: aws s3 cp s3://final-terraform/terraform.tfstate terraform.tfstate || true
+
+    - name: download instance keypairs
+      run: |
+        aws s3 cp s3://final-terraform/keypair/ keypair --recursive
+        chmod 400 ./keypair/mission_link.pem
+        chmod 400 ./keypair/mlink_worker_node.pem
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -input=false
+
+      # On push to "main", build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false || true
+
+    - name: upload Terraform state file
+      run: aws s3 cp terraform.tfstate s3://final-terraform/
+      
+    - name: Terraform destroy
+      if: contains(github.event.head_commit.message, 'destroy' )
+      run: terraform destroy -auto-approve -input=false
+
+    - name: upload Terraform state file
+      run: aws s3 cp terraform.tfstate s3://final-terraform/
