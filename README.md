@@ -110,6 +110,19 @@ nextjs - 채택
 IaC와 CI/CD, 모니터링 기술 스택은 대중적인 스택이라 이번 프로젝트에서 사용하였다.
 
 
+<br>
+
+## 🔧 추가 개선 사항
+#### failsafe 구조
+ - failsafe 한 구조를 만들고 싶었지만 현재 시스템은 failsafe 하지 않다.
+ - SQS, DLQ 를 도입하여 failsafe 한 시스템으로 개선하여야 한다.
+   - 배치는 EventBridge 앞에서 SQS 가 받아서 EventBridge 로 메시지를 넘기는 구조로 개선하자
+#### Nat Gateway 가 하나일 때 좋지 않은 점
+ - 현재 하나의 Nat Gateway 로 워커노드에 인터넷을 연결해놓은 상황
+ - 만약 Nat Gateway 가 존재하는 AZ 가 먹통이 된다면? - 단일 장애 지점 발생
+ - private subnet 에 배치된 워커노드는 클러스터와 통신이 불가능해지며, 클러스터의 기능에 장애가 발생할 수 있다.
+ - 트래픽이 집중되어 Nat Gateway 에 부하가 집중될 수 있다. 지연과 대기 시간이 증가
+ - 만일에 사태에 대비하여 Nat Gateway 는 추가 설치 하는 것이 좋다 (비용생각 해서 메인 + 1개 정도는 필요)
 
 
 
