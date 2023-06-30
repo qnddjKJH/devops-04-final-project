@@ -1,6 +1,6 @@
 # Creating a AWS secret for database master account (Masteraccoundb)
 resource "aws_secretsmanager_secret" "db_password" {
-  name = "mission_link_secret.final_secrets"
+  name = "mission_link_secret.final"
   recovery_window_in_days = 0
 }
 

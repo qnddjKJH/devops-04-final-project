@@ -41,6 +41,9 @@ jobs:
 
     - name: download Terraform state file
       run: aws s3 cp s3://final-terraform/terraform.tfstate terraform.tfstate || true
+
+    - name: download instance keypairs
+      run: aws s3 cp s3://final-terraform/keypair/ keypair --recursive
         
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
@@ -55,6 +58,9 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false || true
+
+    - name: upload Terraform state file
+      run: aws s3 cp terraform.tfstate s3://final-terraform/
 
     - name: Wait for 3 seconds
       run: |
