@@ -9,7 +9,7 @@ resource "aws_instance" "bastion_host" {
   ]
 
   tags = {
-    Name = "mission_link_bastion_host"
+    Name = "mission_link_bastion_hosts"
     project = "MissionLink"
   }
 }
