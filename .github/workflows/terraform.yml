@@ -64,17 +64,7 @@ jobs:
 
     - name: upload Terraform state file
       run: aws s3 cp terraform.tfstate s3://final-terraform/
-
-    - name: Wait for 3 seconds
-      run: |
-        echo "Waiting for 3 seconds.."
-        sleep 3
-
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: |
-        terraform apply -auto-approve -input=false
-        
+      
     - name: Terraform destroy
       if: contains(github.event.head_commit.message, 'destroy' )
       run: terraform destroy -auto-approve -input=false
