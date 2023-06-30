@@ -43,8 +43,11 @@ jobs:
       run: aws s3 cp s3://final-terraform/terraform.tfstate terraform.tfstate || true
 
     - name: download instance keypairs
-      run: aws s3 cp s3://final-terraform/keypair/ keypair --recursive
-        
+      run: |
+        aws s3 cp s3://final-terraform/keypair/ keypair --recursive
+        chmod 400 ./keypair/mission_link.pem
+        chmod 400 ./keypair/mlink_worker_node.pem
+
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
