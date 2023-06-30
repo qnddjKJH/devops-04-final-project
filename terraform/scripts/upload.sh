@@ -1,6 +1,6 @@
 #!/bin/bash
 
-public_ip=$(aws ec2 --profile=admin describe-instances --instance-id ${1} --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+public_ip=$(aws ec2 describe-instances --instance-id ${1} --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
 
 mkdir -p ~/.ssh
 
