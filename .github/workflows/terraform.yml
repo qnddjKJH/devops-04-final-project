@@ -39,6 +39,9 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
+    - name: download Terraform state file
+      run: aws s3 cp s3://final-terraform/terraform.tfstate terraform.tfstate || true
+        
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
@@ -60,9 +63,8 @@ jobs:
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: | 
+      run: |
         terraform apply -auto-approve -input=false
-        terraform state pull > terraform.tfstate
         
     - name: upload Terraform state file
       run: aws s3 cp terraform.tfstate s3://final-terraform/

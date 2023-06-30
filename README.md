@@ -75,6 +75,16 @@ CI/CD 파이프라인: <img src="https://img.shields.io/badge/githubactions-2088
 
 <br>
 
+# 📌 CI/CD 시나리오
+- Github 레포지토리에 WAS의 변경사항이 업데이트 되면 Github action이 트리거 된다.
+- Action에서는 변경된 WAS를 Dockerfile을 통해 image로 만들고, 새로운 이미지 태그를 부여한다.
+- 새로운 이미지는 AWS ECR에 push된다.
+- Action에서는 EKS manifest 파일을 관리하는 manifest 레포지토리에서 manifest를 가져온다.
+- kustomize를 사용하여 가져온 manifest에서 새로운 이미지의 태그를 참조하도록 manifest를 변경한다.
+- Action은 변경된 manifest를 manifest 레포지토리로 push한다.
+- CD 툴로 ArgoCD를 사용하며, ArgoCD는 manifest 레포지토리를 바라보고 있다
+- ArgoCD는 메인 레포지토리에서 action에서 발생했던 push에 의한 manifest 레포지토리의 변경점을 감지, 변경된 이미지 태그를 사용하여 EKS에 배포한다.
+
 ## 📔 스택 선정 이유
 language - javascript<br>
 팀원들의 코딩 수준이 비슷한 자바스크립트 채택
